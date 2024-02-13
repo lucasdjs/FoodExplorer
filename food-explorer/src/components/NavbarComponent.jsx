@@ -9,6 +9,8 @@ import {
 import "../Styles/Navbar.css";
 import logo from '../assets/teste.png';
 import {StyledButton} from './Button.styled'
+import LogoComponent from "./Logo.styled";
+
 
 const NavbarComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,11 +27,7 @@ const NavbarComponent = () => {
   };
   return (
     <nav className="navbar">
-      <div className="logo">
-        <img src={logo} alt="logo" />
-        <h3>food explorer</h3>
-      </div>
-
+    <LogoComponent/>
       <div className="navbar-search">
         <div className="search-wrapper">
           <FontAwesomeIcon icon={faSearch} className="search-icon" />

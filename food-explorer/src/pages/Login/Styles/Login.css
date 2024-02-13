@@ -36,10 +36,6 @@ input {
   color: #ffffff;
 }
 
-button:hover {
-  background-color: #750310;
-}
-
 h1, h2 {
   margin-bottom: 20px;
   font-family: Helvetica, sans-serif;
