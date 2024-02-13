@@ -36,21 +36,6 @@ input {
   color: #ffffff;
 }
 
-button {
-  margin-top: 10px;
-  padding: 8px 20px;
-  background-color: #92000E;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 420px;
-}
-
-button:hover {
-  background-color: #750310;
-}
-
 h1, h2 {
   margin-bottom: 20px;
   font-family: Helvetica, sans-serif;
