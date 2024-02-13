@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../Styles/Navbar.css";
 import logo from '../assets/teste.png';
+import {StyledButton} from './Button.styled'
 
 const NavbarComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -43,14 +44,12 @@ const NavbarComponent = () => {
       </div>
 
       <div className="navbar-button-order">
-        <button>
-          <FontAwesomeIcon icon={faShoppingCart} />
-          Pedidos
-        </button>
-        <button onClick={handleLogout}>
+      <StyledButton> <FontAwesomeIcon icon={faShoppingCart} />
+          Pedidos</StyledButton>
+        <StyledButton onClick={handleLogout}>
           <FontAwesomeIcon icon={faSignOutAlt} />
           Sair
-        </button>
+        </StyledButton>
       </div>
 
     </nav>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './Styles/Login.css'
 import HomePage from "../../components/HomePageComponent";
 import { Link } from "react-router-dom";
+import {StyledButton} from '../../components/Button.styled'
 
 function FormNewAccount() {
   const [name, setName] = useState("");
@@ -61,7 +62,7 @@ function FormNewAccount() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button type="submit">Criar Conta</button>
+            <StyledButton type="submit">Criar Conta</StyledButton>
             <br />
             <p>
             <Link to={`/Login`}>Já tenho uma conta</Link> 

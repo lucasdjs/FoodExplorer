@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {StyledButton} from './Button.styled'
 
 function FormComponent() {
     const [username, setUsername] = useState('');
@@ -38,7 +39,7 @@ function FormComponent() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <button type="submit">Login</button>
+                    <StyledButton type="submit">Login</StyledButton>
                 </form>
             </div>
         </div>
