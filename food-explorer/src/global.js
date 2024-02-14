@@ -29,7 +29,7 @@ a{
     background-color: ${theme.colors.search};
 }
 
-.button-pedidos button{
+.button-pedidos button, .right button{
     background-color: ${theme.colors.buttonOrder};
 }
 `;
