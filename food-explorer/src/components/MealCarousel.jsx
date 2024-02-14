@@ -1,48 +1,65 @@
-import React, { useState } from 'react';
-import { StyledButton } from "./Button.styled";
+import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import MealCard from "./MealCard";
+import "../Styles/Carousel.css";
 
 const MealCarousel = ({ meals }) => {
-  const [selectedMealIndex, setSelectedMealIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const totalMeals = meals.length;
+  const cardsToShow = Math.min(totalMeals, 4); // Mostrar no máximo 4 cartões
 
-  const handleNext = () => {
-    setSelectedMealIndex((prevIndex) =>
-      prevIndex === meals.length - 1 ? 0 : prevIndex + 1
-    );
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: cardsToShow,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: Math.min(cardsToShow, 2),
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: Math.min(cardsToShow, 2),
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
-  const handlePrev = () => {
-    setSelectedMealIndex((prevIndex) =>
-      prevIndex === 0 ? meals.length - 1 : prevIndex - 1
-    );
+  const goToNextSlide = () => {
+    sliderRef.slickNext();
   };
 
-  const handleQuantityChange = (amount) => {
-    setQuantity((prevQuantity) => prevQuantity + amount);
+  const goToPrevSlide = () => {
+    sliderRef.slickPrev();
   };
 
-  const handleInclude = () => {
-    const selectedMeal = meals[selectedMealIndex];
-    console.log(`Included ${quantity} of ${selectedMeal.name} in cart`);
-    // Aqui você pode adicionar a lógica para adicionar o item ao carrinho
-  };
+  let sliderRef;
 
   return (
-    <div className="meal-carousel">
-      <div className="meal-card">
-        <img src={meals[selectedMealIndex].image} alt="Meal" />
-        <h3>{meals[selectedMealIndex].name}</h3>
-        <p>Valor: R$ {meals[selectedMealIndex].price.toFixed(2)}</p>
-        <div className="quantity-selector">
-          <StyledButton onClick={() => handleQuantityChange(-1)}>-</StyledButton>
-          <span>{quantity}</span>
-          <StyledButton onClick={() => handleQuantityChange(1)}>+</StyledButton>
+    <div className="carousel-container">
+      <h3>Refeições</h3>
+      <div className="carousel">
+        <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
+          {meals.map((meal, index) => (
+            <MealCard key={index} meal={meal} />
+          ))}
+        </Slider>
+        <div className="overlay-left" onClick={goToPrevSlide}>
+          {"<"}
         </div>
-        <button onClick={handleInclude}>Incluir no Carrinho</button>
-      </div>
-      <div className="carousel-controls">
-        <button onClick={handlePrev}>Anterior</button>
-        <button onClick={handleNext}>Próximo</button>
+        <div className="overlay-right" onClick={goToNextSlide}>
+          {">"}
+        </div>
       </div>
     </div>
   );

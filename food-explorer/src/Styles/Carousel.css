@@ -1,0 +1,47 @@
+.carousel-container {
+    position: relative;
+    padding: 100px 0;
+  }
+  
+  .carousel {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .overlay-left,
+  .overlay-right {
+    position: absolute;
+    top: 2px;
+    bottom: 0;
+    width: 40%; /* Largura da área de sobreposição ajustada */
+    transition: opacity 0.5s ease; /* Transição suave de opacidade */
+    font-size: 100px;
+    font-weight: 100;
+  }
+  
+  .overlay-left {
+    left: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), #00070A); /* Gradiente transparente para branco */
+  }
+  
+  .overlay-right {
+    right: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), #00070A); /* Gradiente transparente para branco */
+    text-align: right;
+  }
+  
+  .slick-slide {
+    transition: transform 0.5s ease, opacity 0.5s ease; /* Transição suave de transformação e opacidade */
+  }
+  
+  .slick-slide.slick-active {
+    opacity: 1; /* Opacidade total para o slide ativo */
+  }
+  
+  .overlay-left:hover,
+  .overlay-right:hover {
+    opacity: 0.7; /* Opacidade ajustada para o efeito de hover */
+  }
+
+  
+  

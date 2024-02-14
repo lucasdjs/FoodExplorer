@@ -5,7 +5,7 @@ const globalStyles = `
 body{
     background-color: ${theme.colors.primary};
     color: ${theme.colors.text};
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 ul{
