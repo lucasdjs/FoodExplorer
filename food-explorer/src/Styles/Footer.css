@@ -1,0 +1,26 @@
+
+.footer {
+    background-color: #00111A;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .hexagon {
+    color: #4D585E;
+    fill: #4D585E;
+  }
+  .logoFooter{
+    color: #4D585E;
+    font-weight: 700;
+    font-family: 'Poppins';
+    font-size: 20px;
+  }
+  .footerRights{
+    font-size: 15px;
+    font-weight: 300;
+  }

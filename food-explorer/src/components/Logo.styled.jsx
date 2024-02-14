@@ -1,5 +1,6 @@
 import React from 'react';
-import logo from '../assets/teste.png';
+import logo from '../assets/logo.png';
+import '../pages/Login/Styles/Login.css'
 
 function LogoComponent() {
     return (
