@@ -6,23 +6,17 @@ export async function LoginUser(email, senha) {
         const db = await openDb();
         const user = await db.get("SELECT * FROM User WHERE Email = ?", [email]);
         if (!user) {
-            return null;
+            return false;
         }
-console.log(senha)
-console.log(user.Senha)
-        const senhaCorrespondente = await bcrypt.compare(senha, user.Senha);
 
-        if (!senhaCorrespondente) {
-            return null;
+        const passwordMatch = await bcrypt.compare(senha, user.Senha);
+
+        console.log(passwordMatch);
+        if (!passwordMatch) {
+            return false;
         }
-        return {
-            id: user.Id,
-            nome: user.Nome,
-            email: user.Email,
-            admin: user.Admin
-        };
+        return true;
     } catch (error) {
-       
         throw error;
     }
 }
