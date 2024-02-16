@@ -1,22 +1,59 @@
 .quantity {
     margin-top: 10px;
     display: flex;
+
     align-items: center;
+
+    justify-content: center;
 }
 
 .quantity button {
-    margin: 0 20px;
+    padding: 0 10px;
+    margin: 0 10px;
     color: white;
     font-size: 35px;
     background-color: transparent;
     border: none;
-  }
-  .meal-card{
-    margin: 0 20px;
-  }
+}
 
-  .meal-card img{
+.meal-card {
+    margin: 0 20px;
+}
+
+
+.meal-card img {
     width: 150px;
     height: 150px;
+    margin: auto;
+    display: block;
+}
+
+#incluir {
+    background-color: #750310;
+    font-size: 15px;
+    border-radius: 4px;
+    height: 40px;
+}
+
+p, h3 {
+    text-align: center;
+}
+
+#price{
+    color: #82F3FF;
+    font-size: 25px;
+    font-weight: 300;
+}
+
+#description{
+    font-weight: 100;
+}
+
+@media screen and (max-width: 768px) {
+.quantity button{
+    font-size: 18px;
+}
+#incluir{
+    height: 30px;
+}
   }
-  

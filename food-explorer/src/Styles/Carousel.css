@@ -13,7 +13,7 @@
     position: absolute;
     top: 2px;
     bottom: 0;
-    width: 40%; /* Largura da área de sobreposição ajustada */
+    width: 20%; /* Largura da área de sobreposição ajustada */
     transition: opacity 0.5s ease; /* Transição suave de opacidade */
     font-size: 100px;
     font-weight: 100;
@@ -40,7 +40,25 @@
   
   .overlay-left:hover,
   .overlay-right:hover {
-    opacity: 0.7; /* Opacidade ajustada para o efeito de hover */
+    opacity: 0.9; /* Opacidade ajustada para o efeito de hover */
+  }
+
+  @media screen and (max-width: 768px) {
+    .overlay-left,
+  .overlay-right {
+    
+    width: 10%; /* Largura da área de sobreposição ajustada */
+    font-size:60px;
+    top:100px;
+  }
+  h3{
+    padding-top: 10px;
+    font-size: 20px;
+  }
+  p{
+    font-size: 12px;
+  }
+  
   }
 
   

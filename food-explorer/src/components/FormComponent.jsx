@@ -1,18 +1,49 @@
-import React, { useState } from 'react';
-import {StyledButton} from './Button.styled'
+import React, { useState } from "react";
+import { StyledButton } from "./Button.styled";
+import axios from "../axiosConfig.js";
+import { useNavigate } from "react-router-dom";
 
 function FormComponent() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate(); 
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // Aqui você pode adicionar a lógica para o login
-        console.log('Usuário:', username);
-        console.log('Senha:', password);
-        // Limpar os campos de entrada após o envio do formulário
-        setUsername('');
-        setPassword('');
+
+        if (senha.length < 6) {
+            setError("A senha deve conter pelo menos 6 caracteres.");
+            return; 
+        }
+        try {
+            const response = await axios.post(
+                "http://localhost:3000/login",
+                JSON.stringify({ email, senha }),
+                {
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+
+            const { token } = response.data;
+
+            localStorage.setItem("token", token);
+
+            setEmail("");
+            setSenha("");
+
+            navigate("/home");
+        } 
+        catch (error) {
+            if (!error?.response) {
+                setError("Erro ao acessar o servidor");
+
+            } else if (error.response.status === 401) {
+                setError("Usuário ou senha inválidos");
+            }
+            setEmail("");
+            setSenha("");
+        }
     };
 
     return (
@@ -21,26 +52,32 @@ function FormComponent() {
                 <form onSubmit={handleLogin}>
                     <h2>Faça Login</h2>
                     <div>
-                    <label htmlFor="email">Email</label>
-                    <br />
+                        <label htmlFor="email">Email</label>
+                        <br />
                         <input
-                            type="text"
+                            type="email"
                             placeholder="Exemplo: exemplo@exemplo.com.br"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            required
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     <div>
-                    <label htmlFor="senha">Senha</label><br />
+                        <label htmlFor="senha">Senha</label>
+                        <br />
                         <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            type="Password"
+                            placeholder="No minímo 6 caracteres"
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                            required
                         />
                     </div>
-                    <StyledButton type="submit">Login</StyledButton>
+                    <StyledButton type="submit" onClick={(e) => handleLogin(e)}>
+                        Login
+                    </StyledButton>
                 </form>
+                <p id="error">{error}</p>
             </div>
         </div>
     );

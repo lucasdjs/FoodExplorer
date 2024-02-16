@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../Styles/Card.css'
+import { StyledButton } from './Button.styled';
 
 const MealCard = ({ meal }) => {
 
@@ -18,12 +19,15 @@ const MealCard = ({ meal }) => {
     <div className="meal-card">
       <img src={meal.image} alt="Meal" />
       <h3>{meal.name}</h3>
-      <p>Price: ${meal.price.toFixed(2)}</p>
+      <p id='description'>{meal.description}</p>
+      <p id='price'>Price: ${meal.price.toFixed(2)}</p>
       <div className="quantity">
         <button onClick={decrementarQuantidade}>-</button>
         <span>{quantidade}</span>
         <button onClick={incrementarQuantidade}>+</button>
+        <button id='incluir'>incluir</button>
       </div>
+  
     </div>
   );
 };

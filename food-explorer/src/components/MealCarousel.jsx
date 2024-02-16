@@ -47,7 +47,7 @@ const MealCarousel = ({ meals }) => {
 
   return (
     <div className="carousel-container">
-      <h3>Refeições</h3>
+      <h2>Refeições</h2>
       <div className="carousel">
         <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
           {meals.map((meal, index) => (

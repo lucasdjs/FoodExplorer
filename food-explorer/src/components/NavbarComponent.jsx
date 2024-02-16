@@ -10,19 +10,20 @@ import "../Styles/Navbar.css";
 import { StyledButton } from "./Button.styled";
 import LogoComponent from "./Logo.styled";
 import { StyledButtonIcon } from "./ButtonIcon.styled";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const NavbarComponent = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
-    // Adicione aqui sua lógica para realizar a pesquisa conforme o usuário digita
     console.log("Pesquisar:", event.target.value);
   };
 
   const handleLogout = () => {
-    // Aqui você pode implementar a lógica para logout
-    console.log("Logout");
+    navigate("/");
   };
 
   return (
@@ -114,8 +115,7 @@ const NavbarComponent = () => {
                 className="nav-link active text-white"
                 aria-current="page"
                 href="#"
-              >
-                Sair
+              > <Link to={`/`}>Sair</Link>
               </a>
               <hr />
             </li>
