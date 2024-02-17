@@ -1,6 +1,6 @@
 // HomePage.jsx
 import React from 'react';
-import MealCarousel from '../../components/MealCarousel';
+import MealCarousel from '../../components/MealCarousel.Component';
 
 import image1 from '../../assets/image1.png'; // Suponha que esta seja a importação correta da imagem
 

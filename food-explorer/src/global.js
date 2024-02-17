@@ -25,12 +25,16 @@ a{
 .navbar, .offcanvas{
     background-color: ${theme.colors.secundary};
 }
-.search-input{
+.search-input, .select-category{
     background-color: ${theme.colors.search};
 }
 
 .button-pedidos button, .right button{
     background-color: ${theme.colors.buttonOrder};
+}
+
+.upload-image{
+    color: ${theme.colors.text};
 }
 `;
 

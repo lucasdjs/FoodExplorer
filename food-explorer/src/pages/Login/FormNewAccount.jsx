@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./Styles/Login.css";
-import HomePage from "../../components/HomePageComponent";
+import HomePage from "../../components/HomePage.Component";
 import { Link } from "react-router-dom";
 import { StyledButton } from "../../components/Button.styled";
 

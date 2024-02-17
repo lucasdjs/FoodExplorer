@@ -1,8 +1,8 @@
 import React from 'react'
-import NavbarComponent from '../../components/NavbarComponent'
+import NavbarComponent from '../../components/Navbar.Component'
 import './Styles/UserHome.css'
 import SlideShow from '../../components/SlideShow'
-import Footer from '../../components/Footer'
+import Footer from '../../components/Footer.Component'
 import HomePage from '../../pages/CardsMeals/HomePage';
 
 const UserHome = () => {

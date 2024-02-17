@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavbarComponent from '../../components/NavbarComponent';
+import NavbarComponent from '../../components/Navbar.Component';
 import SlideShow from '../../components/SlideShow';
-import Footer from '../../components/Footer';
+import Footer from '../../components/Footer.Component';
 import HomePage from '../../pages/CardsMeals/HomePage';
 import axios from "../../axiosConfig";
 
@@ -36,7 +36,11 @@ const AdminHome = () => {
   }, []);
 
   if (loading) {
-    return <div>Carregando...</div>;
+    return <div class="spinner-container">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
   }
 
   if (!isAdmin) {
@@ -46,7 +50,7 @@ const AdminHome = () => {
 
   return (
     <div className='home'>
-      <NavbarComponent />
+      <NavbarComponent isAdmin={isAdmin}/>
       <SlideShow />
       <HomePage />
       <Footer />

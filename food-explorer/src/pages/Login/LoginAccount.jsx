@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Styles/Login.css";
-import HomePage from "../../components/HomePageComponent";
-import FormComponent from "../../components/FormComponent"
+import HomePage from "../../components/HomePage.Component";
+import FormComponent from "../../components/Form.Component"
 
 function LoginAccount() {
   const [username, setUsername] = useState("");

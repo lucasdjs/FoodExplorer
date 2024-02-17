@@ -2,7 +2,6 @@ import { DetailUserService } from "../services/DetailUserServices.js";
 
 export class DetailUserController {
   async handle(req, res) {
-    console.log(req)
       try {
           const userId = req.userId; 
 

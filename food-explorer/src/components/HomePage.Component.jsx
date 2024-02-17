@@ -1,5 +1,5 @@
 import React from "react";
-import LogoComponent from "./Logo.styled";
+import LogoComponent from "./Logo.Component";
 
 function HomePage() {
   return (

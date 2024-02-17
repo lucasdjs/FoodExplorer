@@ -4,10 +4,26 @@ import jwt from 'jsonwebtoken';
 import {isUserRegistered} from '../services/CreateUserService.js'
 import { DetailUserController } from "../controllers/DetailUserController.js";
 import { isAuthenticated, isAdmin } from "../middlewares/isAuthenticated.js";
+import multer from 'multer';
 
 const Secret = "SecretKey";
 const routes = express.Router();
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/') // O diretório onde os arquivos serão salvos
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname) // O nome do arquivo será o mesmo que o nome original
+    }
+  });
+  
+  const upload = multer({ storage: storage });
+
+  routes.post('/upload', upload.single('file'), function (req, res, next) {
+       res.send('Arquivo enviado com sucesso');
+  });
+  
 const verifyJWT = (req,res, next)=>{
    const token = req.headers.authorization?.split(" ")[1];
    if (!token) {
@@ -21,6 +37,24 @@ const verifyJWT = (req,res, next)=>{
        next();
    });
 };
+
+routes.post('/addDish', verifyJWT, async (req, res) => {
+    try { 
+        const dish = req.body;
+        const image = req.file;  
+        await insertDish(dish, image);
+
+        res.json({
+            "statusCode": 200,
+            "message": "Prato adicionado com sucesso"
+        });
+    } catch (error) {
+        res.status(500).json({
+            "statusCode": 500,
+            "error": "Erro interno do servidor"
+        });
+    }
+});
 
 
 routes.post('/addUser', async (req, res) => {

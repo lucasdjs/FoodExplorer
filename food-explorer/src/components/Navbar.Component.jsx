@@ -8,12 +8,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../Styles/Navbar.css";
 import { StyledButton } from "./Button.styled";
-import LogoComponent from "./Logo.styled";
+import LogoComponent from "./Logo.Component";
 import { StyledButtonIcon } from "./ButtonIcon.styled";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const NavbarComponent = () => {
+const NavbarComponent = ({ isAdmin }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -24,6 +24,17 @@ const NavbarComponent = () => {
 
   const handleLogout = () => {
     navigate("/");
+  };
+  
+  const handleButtonClick = () => {
+    if (isAdmin) {
+      // Se for admin, faça algo diferente, como criar um novo prato
+      // Por enquanto, apenas console.log para demonstração
+      console.log("Criar novo prato");
+    } else {
+      // Caso contrário, continue com a lógica original, como acessar pedidos
+      console.log("Acessar pedidos");
+    }
   };
 
   return (
@@ -40,7 +51,7 @@ const NavbarComponent = () => {
           >
             <span className="navbar-toggler-icon custom-toggler-icon"></span>
           </button>
-          <LogoComponent />
+          <LogoComponent isAdmin={isAdmin}/>
         </div>
 
         <div className="col-6 col-md-6 cold-sm-5 d-none d-md-block">
@@ -59,9 +70,9 @@ const NavbarComponent = () => {
 
         <div className="col-3 d-none d-md-block">
           <div className="button-pedidos">
-            <StyledButton>
-              <FontAwesomeIcon icon={faShoppingCart} />
-              Pedidos
+            <StyledButton onClick={handleButtonClick}>
+            {!isAdmin && <FontAwesomeIcon icon={faShoppingCart} />}
+            {isAdmin ? "Novo prato" : "Pedidos"}
             </StyledButton>
           </div>
         </div>

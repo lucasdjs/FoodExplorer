@@ -6,9 +6,23 @@
   background-color: #00070A;
   width: 100%;
 }
+
+.logo {
+  text-align: center; /* Centraliza o conteúdo */
+}
+.logo-text {
+  display: flex;
+  align-items: center;
+}
 #alert a{
   color: #040f18;
   font-weight: bold;
+}
+
+.admin-badge {
+ display: block;
+ text-align: end;
+ color: #82F3FF;
 }
 .left {
   flex: 1;
@@ -64,6 +78,10 @@ img {
   margin-bottom: 10px;
 }
 
+.admin-badge{
+  font-size: 10px;
+}
+
 #error{
   color: rgb(255, 255, 255);
   font-style: italic;
@@ -96,4 +114,6 @@ img {
   .left .logo h3{
     font-size: 40px;
   }
+
+
 }
