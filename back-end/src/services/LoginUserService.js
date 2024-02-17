@@ -10,12 +10,10 @@ export async function LoginUser(email, senha) {
         }
 
         const passwordMatch = await bcrypt.compare(senha, user.Senha);
-
-        console.log(passwordMatch);
         if (!passwordMatch) {
             return false;
         }
-        return true;
+        return user;
     } catch (error) {
         throw error;
     }

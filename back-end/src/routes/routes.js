@@ -2,6 +2,8 @@ import express from "express";
 import { insertUser, loginUser } from "../controllers/UserController.js";
 import jwt from 'jsonwebtoken';
 import {isUserRegistered} from '../services/CreateUserService.js'
+import { DetailUserController } from "../controllers/DetailUserController.js";
+import { isAuthenticated } from "../middlewares/isAuthenticated.js";
 
 const Secret = "SecretKey";
 const routes = express.Router();
@@ -47,36 +49,28 @@ routes.post('/addUser', async (req, res) => {
     }
 });
 
-routes.get('/getUser', async(req, res)=>{
-try{
-const userRegistered =  getUser(req.body);
-if(userRegistered){
-    res.json({"statusCode": 409})
-}
-}
-catch(error){
-    res.status(500).json({
-        "statusCode": 500,
-        "error": "Erro interno do servidor"
-    });
-}
+routes.get('/userInfo', isAuthenticated, (req, res) => {
+    const detailUserController = new DetailUserController();
+    detailUserController.handle(req, res); 
 });
-
 
 routes.post('/login', async (req, res) => {
     try {
         const { email, senha } = req.body;
 
-        console.log(req.body);
-        console.log(senha);
+
         const user = await loginUser(email, senha);
 
         if (!user) {
             return res.status(401).json({ message: "Credenciais de login inválidas." });
         }
-        const token = jwt.sign({user:user}, Secret, {expiresIn: 500});
+        const token = jwt.sign({
+            sub: user.Id,
+            nome:user.Nome,
+            email:user.Email
+        }, Secret, {expiresIn: 500});
 
-        res.status(200).json({ auth: true, token });
+        res.status(200).json({ Id:user.Id, nome: user.Nome,email: user.Email, token:token });
     } catch (error) {
         res.status(500).json({ message: "Erro interno do servidor." });
     }
