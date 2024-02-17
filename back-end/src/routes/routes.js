@@ -3,7 +3,7 @@ import { insertUser, loginUser } from "../controllers/UserController.js";
 import jwt from 'jsonwebtoken';
 import {isUserRegistered} from '../services/CreateUserService.js'
 import { DetailUserController } from "../controllers/DetailUserController.js";
-import { isAuthenticated } from "../middlewares/isAuthenticated.js";
+import { isAuthenticated, isAdmin } from "../middlewares/isAuthenticated.js";
 
 const Secret = "SecretKey";
 const routes = express.Router();
@@ -21,6 +21,15 @@ const verifyJWT = (req,res, next)=>{
        next();
    });
 };
+
+routes.get("/admin", isAuthenticated, isAdmin, (req, res) => {
+    res.json({ message: "Bem-vindo à área administrativa" });
+});
+
+routes.get("/user", isAuthenticated, (req, res) => {
+    res.json({ message: "Bem-vindo à área do usuário normal" });
+});
+
 
 routes.post('/addUser', async (req, res) => {
     try {
@@ -67,10 +76,15 @@ routes.post('/login', async (req, res) => {
         const token = jwt.sign({
             sub: user.Id,
             nome:user.Nome,
-            email:user.Email
+            email:user.Email,
+            admin: user.Admin
         }, Secret, {expiresIn: 500});
 
-        res.status(200).json({ Id:user.Id, nome: user.Nome,email: user.Email, token:token });
+         if (user.Admin) {
+            return res.status(200).json({ nome: user.Nome, email: user.Email, token: token, isAdmin: true });
+        } else {
+            return res.status(200).json({ nome: user.Nome, email: user.Email, token: token, isAdmin: false });
+        }
     } catch (error) {
         res.status(500).json({ message: "Erro interno do servidor." });
     }

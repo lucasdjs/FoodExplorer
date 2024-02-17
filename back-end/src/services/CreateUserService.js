@@ -9,8 +9,6 @@ async function hashPassword(password) {
 export async function CreateUser(user) {
     try {
         const db = await openDb();
-        user.admin = false;
-
         const hashedPassword = await hashPassword(user.senha);
 
         db.run("INSERT INTO User (Nome, Email, Senha, Admin) VALUES (?, ?, ?, ?)", [user.nome, user.email, hashedPassword, user.admin], function (err) {

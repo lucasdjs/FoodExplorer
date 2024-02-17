@@ -12,6 +12,8 @@ function FormNewAccount() {
   const [userCreated, setUserCreated] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
+  const admin = false;
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
@@ -19,6 +21,7 @@ function FormNewAccount() {
         nome,
         email,
         senha,
+        admin
       });
 
       setNome("");

@@ -25,19 +25,22 @@ function FormComponent() {
                 }
             );
 
-            const { token } = response.data;
+            const { token, isAdmin } = response.data;
 
             localStorage.setItem("token", token);
 
             setEmail("");
             setSenha("");
 
-            navigate("/home");
+            if (isAdmin) {
+                navigate("/home/admin");
+            } else {
+                navigate("/home/user");
+            }
         } 
         catch (error) {
             if (!error?.response) {
                 setError("Erro ao acessar o servidor");
-
             } else if (error.response.status === 401) {
                 setError("Usuário ou senha inválidos");
             }
@@ -66,14 +69,14 @@ function FormComponent() {
                         <label htmlFor="senha">Senha</label>
                         <br />
                         <input
-                            type="Password"
-                            placeholder="No minímo 6 caracteres"
+                            type="password"
+                            placeholder="No mínimo 6 caracteres"
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)}
                             required
                         />
                     </div>
-                    <StyledButton type="submit" onClick={(e) => handleLogin(e)}>
+                    <StyledButton type="submit">
                         Login
                     </StyledButton>
                 </form>
