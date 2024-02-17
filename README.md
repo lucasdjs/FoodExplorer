@@ -38,7 +38,7 @@ npm install
 
 ## Configuração do Banco de Dados
 
-1. O arquivo de banco de dados SQLite (`database.db`) já está incluído no diretório `back-end`. Não é necessário configurar nada adicionalmente.
+rodar o comando npx knex migrate:latest para gerar a migration no banco de dados
 
 ## Execução
 
