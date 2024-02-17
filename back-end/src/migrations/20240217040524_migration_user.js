@@ -11,6 +11,8 @@ exports.up = function(knex) {
         table.boolean('Admin')
         table.timestamps();
       });
+      
+      
 };
 
 /**

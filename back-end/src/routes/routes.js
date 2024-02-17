@@ -8,6 +8,7 @@ import multer from 'multer';
 
 const Secret = "SecretKey";
 const routes = express.Router();
+const upload = multer({ storage: storage });
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -18,11 +19,7 @@ const storage = multer.diskStorage({
     }
   });
   
-  const upload = multer({ storage: storage });
 
-  routes.post('/upload', upload.single('file'), function (req, res, next) {
-       res.send('Arquivo enviado com sucesso');
-  });
   
 const verifyJWT = (req,res, next)=>{
    const token = req.headers.authorization?.split(" ")[1];
@@ -41,7 +38,9 @@ const verifyJWT = (req,res, next)=>{
 routes.post('/addDish', verifyJWT, async (req, res) => {
     try { 
         const dish = req.body;
-        const image = req.file;  
+        console.log(dish)
+        const image = upload.single('file') 
+        console.log(image)
         await insertDish(dish, image);
 
         res.json({

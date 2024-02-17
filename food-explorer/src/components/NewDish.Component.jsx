@@ -6,35 +6,64 @@ import { faUpload, faLessThan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
+import axios from "axios";
+import categoriesData from '../pages/AdminHome/categories.json'
 
 const AddDishForm = () => {
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
-  const [ingredients, setIngredients] = useState("");
+  const [ingredients, setIngredients] = useState([]);
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
 
   const handleImageUpload = async (event) => {
     const formData = new FormData();
     formData.append('file', event.target.files[0]);
+    image = formData;
+  };
   
-    try {
-      const response = await fetch('/upload', {
-        method: 'POST',
-        body: formData
+  const formatPrice = (value) => {
+    if (!value) return '';
+    const cleanValue = value.replace(/[^\d]/g, '');
+
+    const formattedValue = Number(cleanValue / 100).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
+
+    return formattedValue;
+  };
+
+  const handlePriceChange = (event) => {
+    const inputValue = event.target.value;
+    const formattedPrice = formatPrice(inputValue);
+    setPrice(formattedPrice);
+  };
+
+  const handleSave = async (event) => {
+    event.preventDefault();
+
+
+try {
+  console.log(image)
+      const response = await axios.post('http://localhost:3000/addDish', {
+        name,
+        category,
+        ingredients,
+        price,
+        description,
+        image
       });
+
       if (response.ok) {
-        console.log('Arquivo enviado com sucesso');
+        console.log('Prato adicionado com sucesso');
       } else {
-        console.error('Falha ao enviar o arquivo');
+        console.error('Erro ao adicionar o prato');
       }
     } catch (error) {
-      console.error('Erro ao enviar o arquivo:', error);
+      console.error('Erro ao adicionar o prato:', error);
     }
-  };
-  const handleSave = () => {
-    // Lógica para salvar as alterações
   };
 
   return (
@@ -92,7 +121,9 @@ const AddDishForm = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              {/* Opções do dropdown */}
+             {categoriesData.map((cat, index) => (
+                <option key={index} value={cat}>{cat}</option>
+              ))}
             </select>
           </div>
 
@@ -117,7 +148,7 @@ const AddDishForm = () => {
               className="form-control search-input"
               placeholder="R$ 00,00"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={handlePriceChange} // Chamada da função handlePriceChange
             />
           </div>
           <div className="col-12 mt-3">

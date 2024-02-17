@@ -36,9 +36,13 @@ textarea {
   margin-top: 15px;
   font-size: 15px;
 }
-
+#category{
+  color: white;
+  border: none;
+}
 .search-input {
   padding-left: 5px;
+  color: white;
 }
 
 .search-input::placeholder {

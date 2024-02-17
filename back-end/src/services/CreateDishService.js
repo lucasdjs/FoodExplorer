@@ -1,10 +1,13 @@
-export async function CreateDish(dish, image) {
+export async function CreateDish(dish, imagem) {
     try {
-        await db('Dish').insert({
-            Nome: user.nome,
-            Email: user.email,
-            Senha: hashedPassword,
-            Admin: user.admin
+        console.log('passou')
+        await db('dish').insert({
+            name: dish.name,
+            category: dish.category,
+            ingredients: dish.ingredients,
+            price: dish.price,
+            description: dish.description,
+            image: imagem
         });
         return true;
 
