@@ -1,12 +1,15 @@
 import express from 'express';
-import { createTable } from './controllers/UserController.js';
 import routes from './routes/routes.js';
 import cors from 'cors';
 import { json } from 'express';
+import knex from 'knex';
+import knexfile from '../knexfile.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const db = knex(knexfile);
+app.set('db', db);
 
 app.use(express.json());
 app.use(cors());
@@ -16,10 +19,9 @@ app.use('/user', routes);
 
 async function initialize() {
     try {
-        await createTable();
-        console.log("Tabela de usuário criada com sucesso.");
+        console.log("Inicialização concluída.");
     } catch (error) {
-        console.error("Erro ao criar a tabela de usuário:", error);
+        console.error("Erro durante a inicialização:", error);
     }
 }
 

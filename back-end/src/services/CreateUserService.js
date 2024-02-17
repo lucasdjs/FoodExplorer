@@ -1,5 +1,8 @@
-import { openDb } from "../database/db.js";
 import bcrypt from 'bcrypt';
+import knex from 'knex';
+import knexfile from '../../knexfile.js';
+
+const db = knex(knexfile);
 
 async function hashPassword(password) {
     const saltRounds = 8;
@@ -8,17 +11,15 @@ async function hashPassword(password) {
 
 export async function CreateUser(user) {
     try {
-        const db = await openDb();
-        const hashedPassword = await hashPassword(user.senha);
-
-        db.run("INSERT INTO User (Nome, Email, Senha, Admin) VALUES (?, ?, ?, ?)", [user.nome, user.email, hashedPassword, user.admin], function (err) {
-            if (err) {
-                console.error("Erro ao inserir usuário:", err);
-                return false;
-            }
-            console.log("Usuário inserido com sucesso.");
-            return true;
+        const hashedPassword = await hashPassword(user.senha);+
+        await db('User').insert({
+            Nome: user.nome,
+            Email: user.email,
+            Senha: hashedPassword,
+            Admin: user.admin
         });
+        return true;
+
     } catch (error) {
         console.error("Erro ao inserir usuário:", error);
         return false;
@@ -26,8 +27,8 @@ export async function CreateUser(user) {
 }
 
 export async function isUserRegistered(email) {
-    const db = await openDb();
-    const userRegistered = await db.get("SELECT * FROM User WHERE Email = ?", [email]);
-    return userRegistered ? true : false;
+
+     const userRegistered = await db('User').where('Email', email).first();
+     return userRegistered ? true : false;
 }
 
