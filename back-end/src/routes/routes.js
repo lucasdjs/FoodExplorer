@@ -22,14 +22,6 @@ const verifyJWT = (req,res, next)=>{
    });
 };
 
-routes.get("/admin", isAuthenticated, isAdmin, (req, res) => {
-    res.json({ message: "Bem-vindo à área administrativa" });
-});
-
-routes.get("/user", isAuthenticated, (req, res) => {
-    res.json({ message: "Bem-vindo à área do usuário normal" });
-});
-
 
 routes.post('/addUser', async (req, res) => {
     try {
@@ -66,8 +58,6 @@ routes.get('/userInfo', isAuthenticated, (req, res) => {
 routes.post('/login', async (req, res) => {
     try {
         const { email, senha } = req.body;
-
-
         const user = await loginUser(email, senha);
 
         if (!user) {

@@ -3,9 +3,8 @@ import jwt from "jsonwebtoken";
 
 
 export function isAdmin(req, res, next) {
-    // Verifica se o usuário é administrador
     if (req.isAdmin) {
-        next(); // Se for administrador, chama o próximo middleware
+        next();
     } else {
         res.status(403).json({ message: "Acesso negado. Você não é um administrador." });
     }

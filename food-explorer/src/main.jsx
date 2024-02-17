@@ -7,6 +7,7 @@ import Home from "./routes/Home.Routes.jsx";
 import Login from "./routes/Login.Routes.jsx";
 import UserHome from "./pages/UserHome/UserHome.jsx";
 import globalStyles from './global.js';
+import AdminHome from "./pages/AdminHome/AdminHome.jsx";
 
 const styleTag = document.createElement('style');
 styleTag.innerHTML = globalStyles;
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/home/user",
         element: <UserHome />,
+      },
+      {
+        path: "/home/admin",
+        element: <AdminHome />,
       },
     ],
   },
