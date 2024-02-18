@@ -1,3 +1,8 @@
+import knex from 'knex';
+import knexfile from '../../knexfile.js';
+
+const db = knex(knexfile);
+
 export async function CreateDish(dish, imagem) {
     try {
         console.log('passou')

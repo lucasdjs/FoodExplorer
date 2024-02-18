@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import axios from "axios";
-import categoriesData from '../pages/AdminHome/categories.json'
+import categoriesData from '../pages/AdminHome/categories.json';
 
 const AddDishForm = () => {
   const [image, setImage] = useState(null);
@@ -16,13 +16,12 @@ const AddDishForm = () => {
   const [ingredients, setIngredients] = useState([]);
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
-  const handleImageUpload = async (event) => {
-    const formData = new FormData();
-    formData.append('file', event.target.files[0]);
-    image = formData;
+  const handleImageUpload = (event) => {
+    setImage(event.target.files[0]);
   };
-  
+
   const formatPrice = (value) => {
     if (!value) return '';
     const cleanValue = value.replace(/[^\d]/g, '');
@@ -44,20 +43,32 @@ const AddDishForm = () => {
   const handleSave = async (event) => {
     event.preventDefault();
 
+    try {
+      const formData = new FormData();
+      formData.append('file', image);
+      formData.append('name', name);
+      formData.append('category', category);
+      formData.append('ingredients', JSON.stringify(ingredients));
+      formData.append('price', price);
+      formData.append('description', description);
 
-try {
-  console.log(image)
-      const response = await axios.post('http://localhost:3000/addDish', {
-        name,
-        category,
-        ingredients,
-        price,
-        description,
-        image
+      const response = await axios.post('http://localhost:3000/addDish', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
-      if (response.ok) {
-        console.log('Prato adicionado com sucesso');
+      if (response.status === 200) {
+        setAlertMessage(
+          "Prato cadastrado com sucesso!"
+        );
+        setImage(null);
+        setName("");
+        setCategory("");
+        setIngredients([]);
+        setPrice("");
+        setDescription("")
+
       } else {
         console.error('Erro ao adicionar o prato');
       }
@@ -132,8 +143,8 @@ try {
               Ingredientes:
             </label>
             <ReactTagInput
-            placeholder="Adicionar +"
-              tags={[...ingredients]} // Aqui, estamos garantindo que ingredients seja um array
+              placeholder="Adicionar +"
+              tags={[...ingredients]}
               onChange={(newTags) => setIngredients(newTags)}
             />
           </div>
@@ -148,7 +159,7 @@ try {
               className="form-control search-input"
               placeholder="R$ 00,00"
               value={price}
-              onChange={handlePriceChange} // Chamada da função handlePriceChange
+              onChange={handlePriceChange}
             />
           </div>
           <div className="col-12 mt-3">
@@ -166,11 +177,15 @@ try {
             <StyledButtonDish
               type="submit"
               className="btn btn-primary"
-              onClick={handleSave}
             >
               Salvar Alterações
             </StyledButtonDish>
           </div>
+          {alertMessage && (
+              <div className="alert alert-success" role="alert">
+                <p id="alert">{alertMessage}</p>
+              </div>
+            )}
         </div>
       </form>
     </div>
