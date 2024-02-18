@@ -5,7 +5,6 @@ const db = knex(knexfile);
 
 export async function CreateDish(dish, imagem) {
     try {
-        console.log('passou')
         await db('dish').insert({
             name: dish.name,
             category: dish.category,

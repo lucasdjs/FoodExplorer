@@ -2,9 +2,7 @@
   font-weight: 400;
   font-size: 25px;
 }
-.logo img {
-  margin-right: 10px; /* Isso adiciona um espaço entre a imagem e o texto */
-}
+
 
 .logo {
   display: flex;
@@ -12,8 +10,8 @@
   margin-top: 10px;
 }
 .logo img {
-  margin-right: 10px; 
-  margin-left: 10px;
+width: auto;
+  margin-left: 30px;
 }
 
 .search-wrapper {

@@ -6,6 +6,7 @@ import { DetailUserController } from "../controllers/DetailUserController.js";
 import { isAuthenticated, isAdmin } from "../middlewares/isAuthenticated.js";
 import multer from 'multer';
 import { CreateDish } from "../services/CreateDishService.js";
+import { getAllDishController } from '../controllers/DishController.js';
 
 const Secret = "SecretKey";
 const routes = express.Router();
@@ -41,8 +42,6 @@ routes.post('/addDish', verifyJWT, upload.single('file'), async (req, res) => {
     try {
         const dish = req.body;
         const image = req.file.originalname;
-        console.log(dish);
-        console.log(image);
 
         await CreateDish(dish, image);
 
@@ -57,6 +56,8 @@ routes.post('/addDish', verifyJWT, upload.single('file'), async (req, res) => {
         });
     }
 });
+
+routes.get('/getDish', getAllDishController);
 
 
 routes.post('/addUser', async (req, res) => {
@@ -104,7 +105,7 @@ routes.post('/login', async (req, res) => {
             nome: user.Nome,
             email: user.Email,
             admin: user.Admin
-        }, Secret, { expiresIn: 500 });
+        }, Secret, { expiresIn: '10m' });
 
         if (user.Admin) {
             return res.status(200).json({ nome: user.Nome, email: user.Email, token: token, isAdmin: true });

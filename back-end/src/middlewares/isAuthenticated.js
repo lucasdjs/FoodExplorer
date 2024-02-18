@@ -1,7 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 
-
 export function isAdmin(req, res, next) {
     if (req.isAdmin) {
         next();

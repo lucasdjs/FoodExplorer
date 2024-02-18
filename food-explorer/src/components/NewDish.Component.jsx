@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import axios from "axios";
-import categoriesData from '../pages/AdminHome/categories.json';
+import categoriesData from "../pages/AdminHome/categories.json";
 
 const AddDishForm = () => {
   const [image, setImage] = useState(null);
@@ -23,12 +23,12 @@ const AddDishForm = () => {
   };
 
   const formatPrice = (value) => {
-    if (!value) return '';
-    const cleanValue = value.replace(/[^\d]/g, '');
+    if (!value) return "";
+    const cleanValue = value.replace(/[^\d]/g, "");
 
-    const formattedValue = Number(cleanValue / 100).toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
+    const formattedValue = Number(cleanValue / 100).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
     });
 
     return formattedValue;
@@ -43,37 +43,51 @@ const AddDishForm = () => {
   const handleSave = async (event) => {
     event.preventDefault();
 
+    if (
+      !name ||
+      !category ||
+      !ingredients.length ||
+      !price ||
+      !description ||
+      !image
+    ) {
+      setAlertMessage("Por favor, preencha todos os campos!");
+      return;
+    }
+
+    setAlertMessage("");
     try {
       const formData = new FormData();
-      formData.append('file', image);
-      formData.append('name', name);
-      formData.append('category', category);
-      formData.append('ingredients', JSON.stringify(ingredients));
-      formData.append('price', price);
-      formData.append('description', description);
+      formData.append("file", image);
+      formData.append("name", name);
+      formData.append("category", category);
+      formData.append("ingredients", JSON.stringify(ingredients));
+      formData.append("price", price);
+      formData.append("description", description);
 
-      const response = await axios.post('http://localhost:3000/addDish', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      const response = await axios.post(
+        "http://localhost:3000/addDish",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
+      );
 
       if (response.status === 200) {
-        setAlertMessage(
-          "Prato cadastrado com sucesso!"
-        );
+        setAlertMessage("Prato cadastrado com sucesso!");
         setImage(null);
         setName("");
         setCategory("");
         setIngredients([]);
         setPrice("");
-        setDescription("")
-
+        setDescription("");
       } else {
-        console.error('Erro ao adicionar o prato');
+        console.error("Erro ao adicionar o prato");
       }
     } catch (error) {
-      console.error('Erro ao adicionar o prato:', error);
+      console.error("Erro ao adicionar o prato:", error);
     }
   };
 
@@ -132,8 +146,10 @@ const AddDishForm = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-             {categoriesData.map((cat, index) => (
-                <option key={index} value={cat}>{cat}</option>
+              {categoriesData.map((cat, index) => (
+                <option key={index} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
@@ -174,18 +190,22 @@ const AddDishForm = () => {
             />
           </div>
           <div className="col-12 text-end mt-3">
-            <StyledButtonDish
-              type="submit"
-              className="btn btn-primary"
-            >
+            <StyledButtonDish type="submit" className="btn btn-primary">
               Salvar Alterações
             </StyledButtonDish>
           </div>
           {alertMessage && (
-              <div className="alert alert-success" role="alert">
-                <p id="alert">{alertMessage}</p>
-              </div>
-            )}
+            <div
+              className={`alert ${
+                alertMessage === "Por favor, preencha todos os campos!"
+                  ? "alert-danger"
+                  : "alert-success"
+              }`}
+              role="alert"
+            >
+              <p id="alert">{alertMessage}</p>
+            </div>
+          )}
         </div>
       </form>
     </div>

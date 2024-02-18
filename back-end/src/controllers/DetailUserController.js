@@ -14,4 +14,4 @@ export class DetailUserController {
   }
 }
 
-export default DetailUserController; // Adicionando exportação padrão
+export default DetailUserController;

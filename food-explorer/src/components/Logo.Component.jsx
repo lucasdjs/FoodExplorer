@@ -4,16 +4,24 @@ import "../pages/Login/Styles/Login.css";
 import { Link } from 'react-router-dom';
 
 function LogoComponent({ isAdmin }) {
-  const linkDestination = '#'
+  let linkDestination = '#';
+  if(isAdmin){
+    linkDestination = 'http://localhost:5173/home/admin'
+  }
+  else{
+    linkDestination  ='http://localhost:5173/home/user'
+  }
+
   return (
-    <div className="logo">
+    <div className="logo ">
       <Link to={linkDestination}>
-        <div className="logo-text">
-          <img src={logo} alt="logo" />
-          <h3>food explorer</h3>
+        <div className="logo-text row">
+          <img className="col-2 ml-2" src={logo} alt="logo" />
+          <h3 className="col">food explorer</h3>
         </div>
+        <div className="row">      {isAdmin && <span className="admin-badge">Admin</span>}</div>
       </Link>
-      {isAdmin && <span className="admin-badge">Admin</span>}
+
     </div>
   );
 }
