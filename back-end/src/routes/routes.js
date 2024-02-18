@@ -6,7 +6,7 @@ import { DetailUserController } from "../controllers/DetailUserController.js";
 import { isAuthenticated, isAdmin } from "../middlewares/isAuthenticated.js";
 import multer from 'multer';
 import { CreateDish } from "../services/CreateDishService.js";
-import { getAllDishController } from '../controllers/DishController.js';
+import { getAllDishController, getCategories } from '../controllers/DishController.js';
 
 const Secret = "SecretKey";
 const routes = express.Router();
@@ -38,6 +38,23 @@ const verifyJWT = (req, res, next) => {
     });
 };
 
+routes.post('/upload',  upload.single('file'), async (req, res) => {
+    try {
+        const { file } = req;
+        
+        res.json({
+            statusCode: 200,
+            message: "Arquivo enviado com sucesso",
+            filename: file.originalname // Retornar o nome original do arquivo enviado
+        });
+    } catch (error) {
+        res.status(500).json({
+            statusCode: 500,
+            error: "Erro interno do servidor"
+        });
+    }
+});
+
 routes.post('/addDish', verifyJWT, upload.single('file'), async (req, res) => {
     try {
         const dish = req.body;
@@ -58,6 +75,7 @@ routes.post('/addDish', verifyJWT, upload.single('file'), async (req, res) => {
 });
 
 routes.get('/getDish', getAllDishController);
+routes.get('/getCategories',getCategories);
 
 
 routes.post('/addUser', async (req, res) => {
@@ -105,7 +123,7 @@ routes.post('/login', async (req, res) => {
             nome: user.Nome,
             email: user.Email,
             admin: user.Admin
-        }, Secret, { expiresIn: '10m' });
+        }, Secret, { expiresIn: '15m' });
 
         if (user.Admin) {
             return res.status(200).json({ nome: user.Nome, email: user.Email, token: token, isAdmin: true });

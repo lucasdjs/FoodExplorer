@@ -4,9 +4,13 @@ import cors from 'cors';
 import { json } from 'express';
 import knex from 'knex';
 import knexfile from '../knexfile.js';
+import path from 'path'; // Importe o módulo path
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const __dirname = path.resolve();
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const db = knex(knexfile);
 app.set('db', db);

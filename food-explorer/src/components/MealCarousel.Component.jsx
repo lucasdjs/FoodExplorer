@@ -1,68 +1,108 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import MealCard from "./MealCard.Component";
 import "../Styles/Carousel.css";
+import axios from "axios";
 
-const MealCarousel = ({ meals }) => {
-  const totalMeals = meals.length;
-  const cardsToShow = Math.min(totalMeals, 4); // Mostrar no máximo 4 cartões
+const MealCarousel = () => {
+  const [dishByCategory, setDishByCategory] = useState([]);
+  const sliderRefs = useRef([]);
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: cardsToShow,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: Math.min(cardsToShow, 2),
-          slidesToScroll: 1,
-          infinite: true,
-          dots: false,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: Math.min(cardsToShow, 2),
-          slidesToScroll: 1,
-        },
-      },
-    ],
+  useEffect(() => {
+    const fetchDishes = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/getDish");
+        const dishes = response.data.reduce((acc, dish) => {
+          const category = dish.category;
+          if (!acc[category]) {
+            acc[category] = [];
+          }
+          acc[category].push(dish);
+          return acc;
+        }, {});
+        setDishByCategory(dishes);
+      } catch (error) {
+        console.error("Erro ao buscar refeições por categoria:", error);
+      }
+    };
+
+    fetchDishes();
+  }, []);
+
+  useEffect(() => {
+    // Atualiza as referências do Slider com uma nova matriz vazia para evitar o erro de renderização dos hooks
+    sliderRefs.current = new Array(Object.keys(dishByCategory).length).fill(null).map(() => React.createRef());
+  }, [dishByCategory]);
+
+  const goToNextSlide = (index) => {
+    const sliderRef = sliderRefs.current[index];
+    if (sliderRef && sliderRef.current) {
+      sliderRef.current.slickNext();
+    }
+  };
+  
+  const goToPrevSlide = (index) => {
+    const sliderRef = sliderRefs.current[index];
+    if (sliderRef && sliderRef.current) {
+      sliderRef.current.slickPrev();
+    }
   };
 
-  const goToNextSlide = () => {
-    sliderRef.slickNext();
-  };
+  const renderCarousel = () => {
+    return Object.entries(dishByCategory).map(([category, dishes], index) => {
+      const totalDishes = dishes.length;
+      const cardsToShow = Math.min(totalDishes, 4);
 
-  const goToPrevSlide = () => {
-    sliderRef.slickPrev();
-  };
+      const settings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: cardsToShow,
+        slidesToScroll: 1,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: Math.min(cardsToShow, 2),
+              slidesToScroll: 1,
+              infinite: true,
+              dots: false,
+            },
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: Math.min(cardsToShow, 2),
+              slidesToScroll: 1,
+            },
+          },
+        ],
+      };
 
-  let sliderRef;
-
-  return (
-    <div className="carousel-container">
-      <h2>Refeições</h2>
-      <div className="carousel">
-        <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
-          {meals.map((meal, index) => (
-            <MealCard key={index} meal={meal} />
-          ))}
-        </Slider>
-        <div className="overlay-left" onClick={goToPrevSlide}>
-          {"<"}
+      return (
+        <div key={index} className="carousel-container">
+          <h2>{category}</h2>
+          <div className="carousel">
+            <Slider {...settings} ref={sliderRefs.current[index]}>
+              {dishes.map((dish, dishIndex) => (
+                <MealCard key={dishIndex} meal={dish} />
+              ))}
+            </Slider>
+            <div className="overlay-left" onClick={() => goToPrevSlide(index)}>
+              {"<"}
+            </div>
+            <div className="overlay-right" onClick={() => goToNextSlide(index)}>
+              {">"}
+            </div>
+          </div>
         </div>
-        <div className="overlay-right" onClick={goToNextSlide}>
-          {">"}
-        </div>
-      </div>
-    </div>
-  );
+      );
+    });
+  };
+
+  return <>{renderCarousel()}</>;
 };
 
 export default MealCarousel;

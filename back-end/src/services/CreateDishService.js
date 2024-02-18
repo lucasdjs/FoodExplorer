@@ -5,11 +5,13 @@ const db = knex(knexfile);
 
 export async function CreateDish(dish, imagem) {
     try {
+        const priceNumeric = parseFloat(dish.price.replace(/[^\d.,]/g, ''));
+        
         await db('dish').insert({
             name: dish.name,
             category: dish.category,
             ingredients: dish.ingredients,
-            price: dish.price,
+            price: priceNumeric,
             description: dish.description,
             image: imagem
         });

@@ -1,4 +1,4 @@
-import {getAllDish} from '../services/GetDishService.js'
+import {getAllDish, getAllCategories } from '../services/GetDishService.js'
 
 export const getAllDishController = async (req, res) => {
     try {
@@ -8,3 +8,12 @@ export const getAllDishController = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+
+ export const getCategories = async (req, res) => {
+  try {
+    const meals = await getAllCategories();
+    res.json(meals);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
