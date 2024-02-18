@@ -94,7 +94,7 @@ const AddDishForm = () => {
   return (
     <div className="container">
       <div className="row mb-3 voltar">
-        <Link to="/">
+        <Link to="/home/admin">
           {" "}
           <FontAwesomeIcon icon={faLessThan} /> Voltar
         </Link>
