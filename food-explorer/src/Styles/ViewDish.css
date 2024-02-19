@@ -1,0 +1,30 @@
+.imgView img{
+    width: 100%;
+    height: 100%;
+}
+.container{
+    padding: 20px;
+}
+footer{
+    position: fixed !important;
+}
+p, h2 {
+    text-align: left;
+    font-family: 'Poppins';
+}
+.dishInformation{
+    margin-top: 50px;
+}
+
+.quantity{
+    justify-content:left
+}
+
+.dishInformation .quantity button{
+    width: 150px;
+    margin-left: 0;
+}
+
+.tags p{
+    background-color: aqua;
+}

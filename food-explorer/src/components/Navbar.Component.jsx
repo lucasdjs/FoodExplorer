@@ -28,9 +28,7 @@ const NavbarComponent = ({ isAdmin }) => {
   
   const handleButtonClick = () => {
     if (isAdmin) {
-      // Se for admin, faça algo diferente, como criar um novo prato
-      // Por enquanto, apenas console.log para demonstração
-      console.log("Criar novo prato");
+      navigate("/home/admin/newdish");
     } else {
       // Caso contrário, continue com a lógica original, como acessar pedidos
       console.log("Acessar pedidos");

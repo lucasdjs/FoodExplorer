@@ -6,7 +6,7 @@ import { DetailUserController } from "../controllers/DetailUserController.js";
 import { isAuthenticated, isAdmin } from "../middlewares/isAuthenticated.js";
 import multer from 'multer';
 import { CreateDish } from "../services/CreateDishService.js";
-import { getAllDishController, getCategories } from '../controllers/DishController.js';
+import { getAllDishController, getCategories, getById } from '../controllers/DishController.js';
 
 const Secret = "SecretKey";
 const routes = express.Router();
@@ -14,10 +14,10 @@ const routes = express.Router();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/') // O diretório onde os arquivos serão salvos
+        cb(null, 'uploads/')
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname) // O nome do arquivo será o mesmo que o nome original
+        cb(null, file.originalname)
     }
 });
 
@@ -76,6 +76,8 @@ routes.post('/addDish', verifyJWT, upload.single('file'), async (req, res) => {
 
 routes.get('/getDish', getAllDishController);
 routes.get('/getCategories',getCategories);
+
+routes.get('/getDishById/:id', getById);
 
 
 routes.post('/addUser', async (req, res) => {

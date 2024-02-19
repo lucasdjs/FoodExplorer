@@ -36,6 +36,17 @@ a{
 .upload-image{
     color: ${theme.colors.text};
 }
+
+.footer {
+    position: fixed;
+  }
+
+  @media screen and (max-width: 763px) {
+
+    .footer {
+        position: relative;
+      } 
+  }
 `;
 
 export default globalStyles;

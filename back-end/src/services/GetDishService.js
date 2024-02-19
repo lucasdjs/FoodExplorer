@@ -20,3 +20,12 @@ export const getAllDish = async () => {
       throw new Error('Erro ao buscar refeições no banco de dados');
     }
   };
+
+  export const getDishById = async (id) => {
+    try {
+        const dish = await db('Dish').where('id', id).first();
+        return dish;
+    } catch (error) {
+        throw new Error('Erro ao buscar prato no banco de dados');
+    }
+};
