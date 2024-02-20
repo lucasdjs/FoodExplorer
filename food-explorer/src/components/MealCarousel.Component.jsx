@@ -6,7 +6,7 @@ import MealCard from "./MealCard.Component";
 import "../Styles/Carousel.css";
 import axios from "axios";
 
-const MealCarousel = () => {
+const MealCarousel = ({isAdmin}) => {
   const [dishByCategory, setDishByCategory] = useState({});
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const MealCarousel = () => {
           <div className="carousel">
             <Slider {...settings} ref={sliderRefs[index]}>
               {dishes.map((dish, dishIndex) => (
-                <MealCard key={dishIndex} meal={dish} />
+            <MealCard key={dishIndex} meal={dish} isAdmin={isAdmin}/>
               ))}
             </Slider>
             <div className="overlay-left" onClick={() => goToPrevSlide(index)}>

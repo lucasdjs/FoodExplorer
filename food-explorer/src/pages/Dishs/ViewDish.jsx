@@ -4,6 +4,7 @@ import ViewCard from '../../components/ViewDish.Component';
 import '../../Styles/ViewDish.css'
 
 const ViewDishPage = () => {
+    
     return (
     <div className='viewDishPage'>
         <NavbarComponent/>

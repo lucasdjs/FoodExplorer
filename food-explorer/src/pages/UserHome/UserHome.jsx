@@ -7,10 +7,12 @@ import HomePage from '../../pages/CardsMeals/HomePage';
 
 const UserHome = () => {
   return (
+
+    
     <div className='home'>
-      <NavbarComponent/>
+      <NavbarComponent isAdmin={false}/>
       <SlideShow />
-      <HomePage/>
+      <HomePage isAdmin={false}/>
       <Footer />
     </div>
   )

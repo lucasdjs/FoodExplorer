@@ -28,9 +28,9 @@ const NavbarComponent = ({ isAdmin }) => {
   
   const handleButtonClick = () => {
     if (isAdmin) {
+
       navigate("/home/admin/newdish");
     } else {
-      // Caso contrário, continue com a lógica original, como acessar pedidos
       console.log("Acessar pedidos");
     }
   };
@@ -69,6 +69,7 @@ const NavbarComponent = ({ isAdmin }) => {
         <div className="col-3 d-none d-md-block">
           <div className="button-pedidos">
             <StyledButton onClick={handleButtonClick}>
+             
             {!isAdmin && <FontAwesomeIcon icon={faShoppingCart} />}
             {isAdmin ? "Novo prato" : "Pedidos"}
             </StyledButton>

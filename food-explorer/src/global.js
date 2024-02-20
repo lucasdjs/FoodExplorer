@@ -38,7 +38,7 @@ a{
 }
 
 .footer {
-    position: fixed;
+    position: relative;
   }
 
   @media screen and (max-width: 763px) {

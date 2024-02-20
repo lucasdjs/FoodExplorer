@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import '../Styles/Card.css'
-import { StyledButton } from './Button.styled';
+import { Link } from 'react-router-dom';
 
-const MealCard = ({ meal }) => {
+const MealCard = ({ meal, isAdmin }) => {
 
   const [quantidade, setQuantidade] = useState(1);
   const incrementarQuantidade = () => {
@@ -14,13 +14,23 @@ const MealCard = ({ meal }) => {
       setQuantidade(quantidade - 1);
     }
   };
-  
   return (
+    
     <div className="meal-card">
-      <img src={`http://localhost:3000/uploads/${meal.image}`} alt="Meal" />
-      <h3>{meal.name}</h3>
+       {isAdmin ? (
+        <Link to={`/home/admin/viewdish/${meal.id}`}>
+          <img src={`http://localhost:3000/uploads/${meal.image}`} alt="Meal" />
+          <h3>{meal.name}</h3>
+        </Link>
+      ) : (
+        <Link to={`/home/user/viewdish/${meal.id}`}>
+          <img src={`http://localhost:3000/uploads/${meal.image}`} alt="Meal" />
+          <h3>{meal.name}</h3>
+        </Link>
+      )}
       <p id='description'>{meal.description}</p>
       <p id='price'>Price: ${parseFloat(meal.price).toFixed(2)}</p>
+
       <div className="quantity">
         <button onClick={decrementarQuantidade}>-</button>
         <span>{quantidade}</span>

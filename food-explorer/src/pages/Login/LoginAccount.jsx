@@ -9,9 +9,6 @@ function LoginAccount() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica de login
-    console.log("Username:", username);
-    console.log("Password:", password);
   };
 
   return (

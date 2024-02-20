@@ -3,6 +3,7 @@ import Footer from '../../components/Footer.Component';
 import AddDishForm from '../../components/NewDish.Component'
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import axios from "../../axiosConfig";
 
 const NewDish = () => {
 
@@ -43,7 +44,7 @@ const NewDish = () => {
   }
 
   if (!isAdmin) {
-    navigate('/');
+    navigate('/error');
     return null;
   }
 

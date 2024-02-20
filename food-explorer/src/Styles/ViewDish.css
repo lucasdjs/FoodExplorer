@@ -5,7 +5,7 @@
 .container{
     padding: 20px;
 }
-footer{
+.viewDishPage footer{
     position: fixed !important;
 }
 p, h2 {
@@ -21,10 +21,21 @@ p, h2 {
 }
 
 .dishInformation .quantity button{
-    width: 150px;
     margin-left: 0;
 }
 
-.tags p{
-    background-color: aqua;
+#incluir{
+    width: 150px;
+}
+
+.tags span {
+    display: inline-block;
+    margin-right: 5px;
+    background-color: #192227;
+    padding: 6px;
+    border-radius: 2px;
+}
+
+.decrement button{
+    width: 10px;
 }
