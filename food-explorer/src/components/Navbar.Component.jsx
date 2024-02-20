@@ -23,6 +23,7 @@ const NavbarComponent = ({ isAdmin }) => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('token');
     navigate("/");
   };
   
