@@ -24,7 +24,6 @@
 .meal-card img {
     width: 150px;
     height: 150px;
-    margin: auto;
     display: block;
 }
 
@@ -33,10 +32,6 @@
     font-size: 15px;
     border-radius: 4px;
     height: 40px;
-}
-
-p, h3 {
-    text-align: center;
 }
 
 #price{

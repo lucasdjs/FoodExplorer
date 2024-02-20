@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -7,8 +7,7 @@ import "../Styles/Carousel.css";
 import axios from "axios";
 
 const MealCarousel = () => {
-  const [dishByCategory, setDishByCategory] = useState([]);
-  const sliderRefs = useRef([]);
+  const [dishByCategory, setDishByCategory] = useState({});
 
   useEffect(() => {
     const fetchDishes = async () => {
@@ -31,22 +30,23 @@ const MealCarousel = () => {
     fetchDishes();
   }, []);
 
-  useEffect(() => {
-    // Atualiza as referências do Slider com uma nova matriz vazia para evitar o erro de renderização dos hooks
-    sliderRefs.current = new Array(Object.keys(dishByCategory).length).fill(null).map(() => React.createRef());
-  }, [dishByCategory]);
+  const sliderRefs = useMemo(
+    () =>
+      Object.keys(dishByCategory).map(() => React.createRef()),
+    [dishByCategory]
+  );
 
   const goToNextSlide = (index) => {
-    const sliderRef = sliderRefs.current[index];
-    if (sliderRef && sliderRef.current) {
-      sliderRef.current.slickNext();
+    const sliderRef = sliderRefs[index]?.current;
+    if (sliderRef) {
+      sliderRef.slickNext();
     }
   };
   
   const goToPrevSlide = (index) => {
-    const sliderRef = sliderRefs.current[index];
-    if (sliderRef && sliderRef.current) {
-      sliderRef.current.slickPrev();
+    const sliderRef = sliderRefs[index]?.current;
+    if (sliderRef) {
+      sliderRef.slickPrev();
     }
   };
 
@@ -85,7 +85,7 @@ const MealCarousel = () => {
         <div key={index} className="carousel-container">
           <h2>{category}</h2>
           <div className="carousel">
-            <Slider {...settings} ref={sliderRefs.current[index]}>
+            <Slider {...settings} ref={sliderRefs[index]}>
               {dishes.map((dish, dishIndex) => (
                 <MealCard key={dishIndex} meal={dish} />
               ))}
