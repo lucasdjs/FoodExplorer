@@ -1,4 +1,3 @@
-import { openDb } from "../database/db.js";
 import { CreateUser } from "../services/CreateUserService.js";
 import { LoginUser } from "../services/LoginUserService.js";
 

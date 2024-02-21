@@ -12,6 +12,7 @@ import NewDish from "./pages/AdminHome/NewDish.jsx";
 import ViewDishPage from "./pages/Dishs/ViewDish.jsx";
 import ViewDishAdminPage from "./pages/AdminHome/ViewDishAdmin.jsx";
 import ErrorPage from "./pages/ErrorPage/Error404.jsx";
+import EditDish from "./pages/AdminHome/EditDishAdmin.jsx";
 
 const styleTag = document.createElement('style');
 styleTag.innerHTML = globalStyles;
@@ -31,6 +32,7 @@ ReactDOM.render(
           <Route path="home/admin" element={<AdminHome />} />
           <Route path="home/admin/newdish" element={<NewDish />} />
           <Route path="home/admin/viewDish/:id" element={<ViewDishAdminPage />} />
+          <Route path="home/admin/editdish/:id" element={<EditDish />} />
         </Route>
       </Routes>
     </Router>

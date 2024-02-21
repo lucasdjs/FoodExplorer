@@ -82,7 +82,7 @@ const ViewCard = ({ isAdmin }) => {
               </>
             )}
             {isAdmin ? (
-              <Link to={`/editarPrato/${id}`}>
+              <Link to={`http://localhost:5173/home/admin/editdish/${id}`}>
                 <StyledButton id="incluir">Editar Prato</StyledButton>
               </Link>
             ) : (

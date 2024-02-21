@@ -14,6 +14,10 @@ textarea {
   text-align: right;
 }
 
+#deleteButton{
+  margin-right:10px ;
+  background-color: #0D161B;
+}
 
 .custom-file-upload {
   border: none;

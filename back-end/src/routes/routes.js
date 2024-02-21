@@ -6,11 +6,11 @@ import { DetailUserController } from "../controllers/DetailUserController.js";
 import { isAuthenticated, isAdmin } from "../middlewares/isAuthenticated.js";
 import multer from 'multer';
 import { CreateDish } from "../services/CreateDishService.js";
-import { getAllDishController, getCategories, getById } from '../controllers/DishController.js';
+import { getAllDishController, getCategories, getById, editById, deleteById } from '../controllers/DishController.js';
+import { addFavorite } from "../controllers/FavoritesController.js";
 
 const Secret = "SecretKey";
 const routes = express.Router();
-
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -76,8 +76,10 @@ routes.post('/addDish', verifyJWT, upload.single('file'), async (req, res) => {
 
 routes.get('/getDish', getAllDishController);
 routes.get('/getCategories',getCategories);
-
 routes.get('/getDishById/:id', getById);
+routes.put('/editDish/:id', verifyJWT ,editById);
+routes.delete('/deleteDish/:id',verifyJWT,deleteById)
+routes.post('/favorites', addFavorite);
 
 
 routes.post('/addUser', async (req, res) => {

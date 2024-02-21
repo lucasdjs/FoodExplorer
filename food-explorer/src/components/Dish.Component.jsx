@@ -1,15 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import "../Styles/NewDish.css";
 import { StyledButtonDish } from "./ButtonSaveDish";
-import { faUpload, faLessThan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUpload,
+  faLessThan,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import axios from "axios";
 import categoriesData from "../pages/AdminHome/categories.json";
 
-const AddDishForm = () => {
+const DishForm = ({ isEditing }) => {
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -17,6 +23,41 @@ const AddDishForm = () => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+
+  useEffect(() => {
+    if (isEditing) {
+      const fetchDish = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/getDishById/${id}`
+          );
+          const dishData = response.data;
+          var ingredientes = dishData.ingredients
+            .replace(/[\[\]"]/g, "")
+            .split(",");
+  
+          const imageUrl = `http://localhost:3000/uploads/${dishData.image}`;
+  
+          const formattedPrice = Number(dishData.price).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+          });
+  
+          setImage(imageUrl);
+          setName(dishData.name);
+          setCategory(dishData.category);
+          setIngredients(ingredientes);
+          setPrice(formattedPrice);
+          setDescription(dishData.description);
+        } catch (error) {
+          console.error("Error fetching dish data:", error);
+        }
+      };
+  
+      fetchDish();
+    }
+  }, [id, isEditing]);
+  
 
   const handleImageUpload = (event) => {
     setImage(event.target.files[0]);
@@ -43,14 +84,7 @@ const AddDishForm = () => {
   const handleSave = async (event) => {
     event.preventDefault();
 
-    if (
-      !name ||
-      !category ||
-      !ingredients.length ||
-      !price ||
-      !description ||
-      !image
-    ) {
+    if (!name || !category || !ingredients.length || !price || !description) {
       setAlertMessage("Por favor, preencha todos os campos!");
       return;
     }
@@ -65,29 +99,63 @@ const AddDishForm = () => {
       formData.append("price", price);
       formData.append("description", description);
 
-      const response = await axios.post(
-        "http://localhost:3000/addDish",
-        formData,
-        {
+      let response;
+      
+      if (isEditing) {
+        response = await axios.put(
+          `http://localhost:3000/editDish/${id}`,
+          {
+            name,
+            category,
+            ingredients,
+            price,
+            description,
+            image
+          }
+        );
+      } else {
+        response = await axios.post("http://localhost:3000/addDish", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
-      );
+        });
+      }
 
       if (response.status === 200) {
-        setAlertMessage("Prato cadastrado com sucesso!");
-        setImage(null);
-        setName("");
-        setCategory("");
-        setIngredients([]);
-        setPrice("");
-        setDescription("");
+        setAlertMessage(
+          isEditing
+            ? "Prato atualizado com sucesso!"
+            : "Prato cadastrado com sucesso!"
+        );
+        if (!isEditing) {
+          setImage(null);
+          setName("");
+          setCategory("");
+          setIngredients([]);
+          setPrice("");
+          setDescription("");
+        }
       } else {
-        console.error("Erro ao adicionar o prato");
+        console.error("Erro ao salvar o prato");
       }
     } catch (error) {
-      console.error("Erro ao adicionar o prato:", error);
+      console.error("Erro ao salvar o prato:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("Tem certeza que deseja excluir este prato?")) {
+      try {
+        const response = await axios.delete(`http://localhost:3000/deleteDish/${id}`);
+        if (response.status === 200) {
+          setAlertMessage("Prato excluído com sucesso!");
+          navigate("/home/admin");
+        } else {
+          console.error("Erro ao excluir o prato");
+        }
+      } catch (error) {
+        console.error("Erro ao excluir o prato:", error);
+      }
     }
   };
 
@@ -100,7 +168,7 @@ const AddDishForm = () => {
         </Link>
       </div>
 
-      <h2>Adicionar Prato</h2>
+      <h2>{isEditing ? "Editar Prato" : "Adicionar Prato"}</h2>
 
       <form className="formNewDish" onSubmit={handleSave}>
         <div className="row">
@@ -189,8 +257,18 @@ const AddDishForm = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="col-12 text-end mt-3">
-            <StyledButtonDish type="submit" className="btn btn-primary">
+          <div className="col-12 mt-3">
+            {isEditing && (
+              <StyledButtonDish
+                type="button"
+                className="btn btn-delete"
+                id="deleteButton"
+                onClick={handleDelete}
+              >
+                Excluir Prato
+              </StyledButtonDish>
+            )}
+            <StyledButtonDish type="submit" className="btn btn-primary me-2">
               Salvar Alterações
             </StyledButtonDish>
           </div>
@@ -212,4 +290,4 @@ const AddDishForm = () => {
   );
 };
 
-export default AddDishForm;
+export default DishForm;

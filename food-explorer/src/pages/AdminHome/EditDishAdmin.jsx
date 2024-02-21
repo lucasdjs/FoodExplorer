@@ -1,6 +1,6 @@
 import NavbarComponent from '../../components/Navbar.Component';
 import Footer from '../../components/Footer.Component';
-import AddDishForm from '../../components/NewDish.Component'
+import DishForm from '../../components/Dish.Component'
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from "../../axiosConfig";
@@ -51,7 +51,7 @@ const EditDish = () => {
   return (
     <div className='newdish'>
         <NavbarComponent isAdmin={isAdmin} />
-        <AddDishForm/>
+        <DishForm isEditing={true}/>
         <Footer />
     </div>
   );
