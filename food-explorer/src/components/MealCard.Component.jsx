@@ -24,31 +24,30 @@ const MealCard = ({ meal, isAdmin }) => {
       return null;
     }
   };
-  
 
   const [quantidade, setQuantidade] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
   const userId = getUserIdFromToken();
-  console.log(userId)
 
   useEffect(() => {
-    const checkFavorite = async () => {
-      if (userId) {
-        try {
-          const response = await axios.get(
-            `http://localhost:3000/favorites/user/${userId}`
-          );
-          const favorites = response.data;
-          // Verifica se o mealId está presente nos favoritos
-          setIsFavorite(favorites.some(favorite => favorite.mealId === meal.id));
-        } catch (error) {
-          console.error("Erro ao verificar favoritos:", error);
+    if (!isAdmin) {
+      const checkFavorite = async () => {
+        if (userId) {
+          try {
+            const response = await axios.get(
+              `http://localhost:3000/favorites/${userId}`
+            );
+            const favorites = response.data;
+            setIsFavorite(favorites.some(favorite => favorite.mealId === meal.id));
+          } catch (error) {
+            console.error("Erro ao verificar favoritos:", error);
+          }
         }
-      }
-    };
-
-    checkFavorite();
-  }, [userId, meal.id]);
+      };
+  
+      checkFavorite();
+    }
+  }, [isAdmin, userId, meal.id]);
 
 
   const incrementarQuantidade = () => {

@@ -6,11 +6,31 @@ import Footer from '../../components/Footer.Component'
 import HomePage from '../../pages/CardsMeals/HomePage';
 
 const UserHome = () => {
-  return (
+  
+  const getUserIdFromToken = () => {
+    const token = localStorage.getItem("token");
+  
+    if (token) {
+      try {
+        const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+        return tokenPayload.sub;
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+        return null;
+      }
+    } else {
+      console.error("Token não encontrado na localStorage.");
+      return null;
+    }
+  };
 
-    
+  const userId = getUserIdFromToken();
+
+  
+
+  return (
     <div className='home'>
-      <NavbarComponent isAdmin={false}/>
+      <NavbarComponent isAdmin={false} idUser={userId}/>
       <SlideShow />
       <HomePage isAdmin={false}/>
       <Footer />

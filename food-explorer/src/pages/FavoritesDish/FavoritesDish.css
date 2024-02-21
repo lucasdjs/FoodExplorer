@@ -1,0 +1,39 @@
+h1{
+    font-family: 'Poppins';
+}
+
+.container h1{
+  margin-bottom: 50px;
+}
+
+.favoritesCard img{
+    width: 100%;
+    height: 100%;
+}
+.favoritesDish .footer{
+    position: fixed;
+}
+
+.favorites button{
+  background-color: transparent;
+  color: #AB4D55;
+}
+
+@media (max-width: 767px) {
+    .favoritesCard {
+      display: flex; 
+      align-items: center; 
+    }
+  
+    .favoritesCard img {
+      max-width: 100px; /* Ajuste a largura da imagem conforme necessário */
+      height: auto; /* Permita que a altura seja ajustada automaticamente de acordo com a largura */
+      margin-right: 10px; /* Adicione margem à direita para espaçamento entre a imagem e o texto */
+    }
+  
+    .descriptionFavorite {
+      flex: 1; /* Permite que o texto ocupe o restante do espaço disponível */
+    }
+  }
+  
+  

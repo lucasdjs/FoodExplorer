@@ -3,6 +3,11 @@
   font-size: 25px;
 }
 
+.favorites{
+  margin-top: 20px;
+  font-family: 'Poppins';
+  font-weight: 300;
+}
 
 .logo {
   display: flex;

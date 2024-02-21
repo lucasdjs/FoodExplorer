@@ -7,7 +7,7 @@ import { isAuthenticated, isAdmin } from "../middlewares/isAuthenticated.js";
 import multer from 'multer';
 import { CreateDish } from "../services/CreateDishService.js";
 import { getAllDishController, getCategories, getById, editById, deleteById } from '../controllers/DishController.js';
-import { addFavorite, getFavoritesByUserId } from "../controllers/FavoritesController.js";
+import { addFavorite, getFavoritesByUserId, getFavoriteDishByIds } from "../controllers/FavoritesController.js";
 
 const Secret = "SecretKey";
 const routes = express.Router();
@@ -80,7 +80,8 @@ routes.get('/getDishById/:id', getById);
 routes.put('/editDish/:id', verifyJWT ,editById);
 routes.delete('/deleteDish/:id',verifyJWT,deleteById)
 routes.post('/favorites', addFavorite);
-routes.get('/favorites/user/:id',getFavoritesByUserId);
+routes.get('/favorites/:id',getFavoritesByUserId);
+routes.get('/getDishesByIds/',getFavoriteDishByIds);
 
 
 routes.post('/addUser', async (req, res) => {

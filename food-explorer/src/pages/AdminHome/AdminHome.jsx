@@ -8,9 +8,10 @@ import axios from "../../axiosConfig";
 
 const AdminHome = () => {
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [idUser, setIdUser] = useState(null);
 
   useEffect(() => {
     const checkAdminStatus = async () => {
@@ -25,6 +26,7 @@ const AdminHome = () => {
         });
 
         const { isAdmin } = response.data;
+        setIdUser(response.data.id)
         setIsAdmin(isAdmin);
       } catch (error) {
         console.error("Erro ao verificar o status de administrador:", error);
@@ -37,11 +39,11 @@ const AdminHome = () => {
     checkAdminStatus();
   }, []);
 
+
   if (!isAdmin || isAdmin === null || isAdmin === undefined) {
     navigate("/error");
     return null;
   }
-
 
   if (error) {
     navigate("/error");
@@ -60,7 +62,7 @@ const AdminHome = () => {
 
   return (
     <div className="home">
-      <NavbarComponent isAdmin={isAdmin} />
+      <NavbarComponent isAdmin={isAdmin} idUser={idUser} />
       <SlideShow />
       <HomePage isAdmin={isAdmin} />
       <Footer />

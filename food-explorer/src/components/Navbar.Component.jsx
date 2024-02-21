@@ -13,7 +13,7 @@ import { StyledButtonIcon } from "./ButtonIcon.styled";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const NavbarComponent = ({ isAdmin }) => {
+const NavbarComponent = ({ isAdmin, idUser }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -23,13 +23,12 @@ const NavbarComponent = ({ isAdmin }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     navigate("/");
   };
-  
+
   const handleButtonClick = () => {
     if (isAdmin) {
-
       navigate("/home/admin/newdish");
     } else {
       console.log("Acessar pedidos");
@@ -50,7 +49,7 @@ const NavbarComponent = ({ isAdmin }) => {
           >
             <span className="navbar-toggler-icon custom-toggler-icon"></span>
           </button>
-          <LogoComponent isAdmin={isAdmin}/>
+          <LogoComponent isAdmin={isAdmin} />
         </div>
 
         <div className="col-6 col-md-6 cold-sm-5 d-none d-md-block">
@@ -67,12 +66,15 @@ const NavbarComponent = ({ isAdmin }) => {
           </div>
         </div>
 
-        <div className="col-3 d-none d-md-block">
+        <div className="col d-none d-md-block favorites">
+        <Link to={isAdmin ? `/home/admin/favoritesDishes/${idUser}` : `/home/user/favoritesDishes/${idUser}`}>Meus favoritos</Link>
+          </div>
+
+        <div className="col-2 d-none d-md-block">
           <div className="button-pedidos">
             <StyledButton onClick={handleButtonClick}>
-             
-            {!isAdmin && <FontAwesomeIcon icon={faShoppingCart} />}
-            {isAdmin ? "Novo prato" : "Pedidos"}
+              {!isAdmin && <FontAwesomeIcon icon={faShoppingCart} />}
+              {isAdmin ? "Novo prato" : "Pedidos"}
             </StyledButton>
           </div>
         </div>
@@ -126,7 +128,9 @@ const NavbarComponent = ({ isAdmin }) => {
                 className="nav-link active text-white"
                 aria-current="page"
                 href="#"
-              > <Link to={`/`}>Sair</Link>
+              >
+                {" "}
+                <Link to={`/`}>Sair</Link>
               </a>
               <hr />
             </li>
