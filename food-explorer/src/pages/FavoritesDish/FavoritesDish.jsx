@@ -20,7 +20,6 @@ const FavoritesDish = ({ isAdmin }) => {
         if (response && response.data) {
           setFavorites(response.data);
 
-          console.log(response.data)
           const favoriteIds = response.data.map((favorite) => favorite.mealId);
           await fetchFavoriteDishes(favoriteIds);
         } else {
@@ -34,18 +33,22 @@ const FavoritesDish = ({ isAdmin }) => {
     fetchFavorites();
   }, [id]);
 
-  // const removeFromFavorites = async (favoriteId) => {
-  //   try {
-  //     await axios.delete(`http://localhost:3000/deleteFavoriteById/${id}`, {
-  //       data: {favoriteId }
-  //     });
-      
-  //     const updatedFavorites = favorites.filter(favorite => favorite.mealId !== favoriteId);
-  //     setFavorites(updatedFavorites);
-  //   } catch (error) {
-  //     console.error("Error removing from favorites:", error);
-  //   }
-  // };
+  const removeFromFavorites = async (favoriteId) => {
+    try {
+      await axios.delete(`http://localhost:3000/deleteFavoriteById/${id}`, {
+        data: { favoriteId }
+      });
+  
+      const updatedFavorites = favorites.filter(favorite => favorite.mealId !== favoriteId);
+      setFavorites(updatedFavorites);
+  
+      const updatedFavoriteIds = updatedFavorites.map(favorite => favorite.mealId);
+      await fetchFavoriteDishes(updatedFavoriteIds);
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+    }
+  };
+  
 
   const fetchFavoriteDishes = async (favoriteIds) => {
     try {
@@ -55,8 +58,11 @@ const FavoritesDish = ({ isAdmin }) => {
         },
       });
       if (response && response.data) {
-        console.log(response.data)
-        setFavoriteDishes(response.data);
+        // Remover itens duplicados com base no ID
+        const uniqueDishes = response.data.filter((dish, index, self) => 
+          index === self.findIndex((d) => d.id === dish.id)
+        );
+        setFavoriteDishes(uniqueDishes);
       } else {
         console.log("Response or response data is empty:", response);
       }
@@ -86,7 +92,7 @@ const FavoritesDish = ({ isAdmin }) => {
                   <h5 className="card-title">{dish.name}</h5>
                   <button
                     className="btn"
-                  
+                    onClick={() => removeFromFavorites(dish.id)}
                   >
                     Remover dos favoritos
                   </button>
