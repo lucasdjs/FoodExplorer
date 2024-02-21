@@ -17,7 +17,6 @@ export const getFavorites = async (userId) => {
 };
 
 export const removeFavorite = async (userId, mealId) => {
-    console.log(userId, mealId)
     try {
         await db('favoriteDish').where({ userId, mealId }).del();
         console.log(`Favorite removed for user ${userId} and meal ${mealId}`);

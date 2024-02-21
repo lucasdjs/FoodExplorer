@@ -26,8 +26,6 @@ export const getFavoritesByUserId = async (req, res) => {
 
 export const getFavoriteDishByIds = async (req, res) => {
   const { favoriteIds } = req.query;
-  console.log(favoriteIds)
-
   try {
       const dishes = await getFavoriteDishes(favoriteIds);
       res.json(dishes);

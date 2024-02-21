@@ -36,31 +36,33 @@ const FavoritesDish = ({ isAdmin }) => {
   const removeFromFavorites = async (favoriteId) => {
     try {
       await axios.delete(`http://localhost:3000/deleteFavoriteById/${id}`, {
-        data: { favoriteId }
+        data: { favoriteId },
       });
-  
-      const updatedFavorites = favorites.filter(favorite => favorite.mealId !== favoriteId);
+
+      const updatedFavorites = favorites.filter(
+        (favorite) => favorite.mealId !== favoriteId
+      );
       setFavorites(updatedFavorites);
-  
-      const updatedFavoriteIds = updatedFavorites.map(favorite => favorite.mealId);
+      const updatedFavoriteIds = updatedFavorites.map(
+        (favorite) => favorite.mealId
+      );
       await fetchFavoriteDishes(updatedFavoriteIds);
     } catch (error) {
       console.error("Error removing from favorites:", error);
     }
   };
-  
 
   const fetchFavoriteDishes = async (favoriteIds) => {
     try {
       const response = await axios.get(`http://localhost:3000/getDishesByIds`, {
         params: {
-          favoriteIds: favoriteIds
+          favoriteIds: favoriteIds,
         },
       });
       if (response && response.data) {
-        // Remover itens duplicados com base no ID
-        const uniqueDishes = response.data.filter((dish, index, self) => 
-          index === self.findIndex((d) => d.id === dish.id)
+        const uniqueDishes = response.data.filter(
+          (dish, index, self) =>
+            index === self.findIndex((d) => d.id === dish.id)
         );
         setFavoriteDishes(uniqueDishes);
       } else {
