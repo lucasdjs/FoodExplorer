@@ -66,9 +66,12 @@ const NavbarComponent = ({ isAdmin, idUser }) => {
           </div>
         </div>
 
-        <div className="col d-none d-md-block favorites">
-        <Link to={isAdmin ? `/home/admin/favoritesDishes/${idUser}` : `/home/user/favoritesDishes/${idUser}`}>Meus favoritos</Link>
-          </div>
+        {!isAdmin &&
+ <div className="col d-none d-md-block favorites">
+ <Link to={`/home/user/favoritesDishes/${idUser}`}>Meus favoritos</Link>
+   </div>
+        }
+       
 
         <div className="col-2 d-none d-md-block">
           <div className="button-pedidos">
