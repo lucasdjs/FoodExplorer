@@ -36,6 +36,9 @@ margin-left: 150px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: black;
+  overflow: hidden; 
+  padding: 10px;
 }
 
 .meal-card h3{
@@ -64,17 +67,19 @@ text-align: center;
 }
 
 #description{
-    max-height: 80px; /* Ajuste conforme necessário */
+    max-height: 30px; /* Ajuste conforme necessário */
   overflow: hidden;
   text-wrap: wrap;
+  margin-bottom: 10px;
 
 }
 
 @media screen and (max-width: 768px) {
 .quantity button{
-    font-size: 18px;
+    font-size: 15px;
 }
 #incluir{
     height: 30px;
+    width: 60px !important;
 }
   }

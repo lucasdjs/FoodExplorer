@@ -22,14 +22,11 @@ export const getAllCategories = async () => {
 };
 
 export const getFavoriteDishes = async (favoriteIds) => {
-  try {
-    console.log("Favorite IDs:", favoriteIds);
-    
+  try {    
     const dishes = await db('dish')
     .select('dish.*')
     .join('favoriteDish', 'dish.id', 'favoriteDish.mealId');
     
-    console.log("Dishes:", dishes);
     return dishes;
   } catch (error) {
     throw error;
