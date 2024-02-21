@@ -16,6 +16,11 @@ margin-left: 150px;
     margin-left: 150px;
 }
 
+.favorite-icon button{
+    border: none;
+    background-color: transparent;
+}
+
 .quantity button {
     padding: 0 10px;
     margin: 0 5px;

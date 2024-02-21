@@ -1,19 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Styles/Card.css";
 import { Link } from "react-router-dom";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const MealCard = ({ meal, isAdmin }) => {
+  const getUserIdFromToken = () => {
+    const token = localStorage.getItem("token");
+  
+    if (token) {
+      try {
+        const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+        return tokenPayload.sub;
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+        return null;
+      }
+    } else {
+      console.error("Token não encontrado na localStorage.");
+      return null;
+    }
+  };
+  
+
   const [quantidade, setQuantidade] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
+  const userId = getUserIdFromToken();
+  console.log(userId)
+
+  useEffect(() => {
+    const checkFavorite = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/favorites/user/${userId}`
+          );
+          const favorites = response.data;
+          // Verifica se o mealId está presente nos favoritos
+          setIsFavorite(favorites.some(favorite => favorite.mealId === meal.id));
+        } catch (error) {
+          console.error("Erro ao verificar favoritos:", error);
+        }
+      }
+    };
+
+    checkFavorite();
+  }, [userId, meal.id]);
+
 
   const incrementarQuantidade = () => {
     setQuantidade(quantidade + 1);
   };
-  
 
   const decrementarQuantidade = () => {
     if (quantidade > 1) {
@@ -24,7 +64,7 @@ const MealCard = ({ meal, isAdmin }) => {
   const addFavorites = async (mealId) => {
     try {
       const response = await axios.post(
-        "URL_DO_ENDPOINT_PARA_ADICIONAR_AOS_FAVORITOS",
+        "http://localhost:3000/favorites",
         {
           userId: userId,
           mealId: mealId,
@@ -47,10 +87,10 @@ const MealCard = ({ meal, isAdmin }) => {
       )}
       {!isAdmin && (
         <div className="favorite-icon" id="favoriteIcon">
-              <button onClick={() => addFavorites(meal.id)}>
-            <FontAwesomeIcon 
-              icon={isFavorite.includes(meal.id) ? faHeartSolid : faHeart} 
-              style={{ color: isFavorite.includes(meal.id) ? 'red' : 'black', backgroundColor: isFavorite.includes(meal.id) ? 'red' : 'transparent', borderRadius: '50%' }} 
+          <button onClick={() => addFavorites(meal.id)}>
+            <FontAwesomeIcon
+              icon={isFavorite ? faHeartSolid : faHeart}
+              style={{ color: isFavorite ? "red" : "white" }}
             />
           </button>
         </div>
