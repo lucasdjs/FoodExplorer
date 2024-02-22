@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PixIcon from "../../components/PixIcon";
 import QRCode from "qrcode.react";
 import { StyledButton } from "../../components/Button.styled";
-import InputMask from "react-input-mask"; 
+import InputMask from "react-input-mask";
 
 const Orders = () => {
   const getUserIdFromToken = () => {
@@ -41,6 +41,8 @@ const Orders = () => {
   const [expirationDate, setExpirationDate] = useState("");
   const [cvc, setCvc] = useState("");
   const [isCardInfoValid, setIsCardInfoValid] = useState(false);
+  const [idOrder, setIdOrder] = useState(localStorage.getItem('orderId')); 
+  const [order, setOrder] = useState(null);
 
   const validateCardInfo = () => {
     return (
@@ -74,6 +76,28 @@ const Orders = () => {
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem('orderId', idOrder);
+  }, [idOrder]);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/getOrderFinishById/${idOrder}`);
+        setOrder(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar a ordem:', error);
+      }
+    };
+    fetchOrder();
+  }, [idOrder]);
+
+  useEffect(() => {
+    const pendingOrder = order && order.status === 'pendente';
+    setShowPaymentPending(pendingOrder);
+    setShowPayment(!pendingOrder);
+  }, [order]);
+
   const handlePixClick = () => {
     setShowPixQRCode(true);
     setShowCreditForm(false);
@@ -90,13 +114,36 @@ const Orders = () => {
     }
   };
 
-  const handlePaymentSubmit = (event) => {
+  const handlePaymentSubmit = async (event) => {
     if (validateCardInfo()) {
-          
-    event.preventDefault();
+      event.preventDefault();
       setShowCreditForm(false);
       setShowPixQRCode(false);
       setShowPaymentPending(true);
+
+      const userId = getUserIdFromToken();
+      const total = calculateTotal();
+      const itens = orders.map((dish) => `${dish.quantity} x ${dish.name}`);
+
+      const data = {
+        userId,
+        total,
+        itens,
+        status: "pendente",
+      };
+
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/insertOrderFinish",
+          data
+        );
+
+        setIdOrder(response.data.id);
+        console.log("Resposta do servidor:", response.data);
+      } catch (error) {
+        console.error("Erro ao enviar os dados do pedido:", error);
+      }
+
       return;
     } else {
       alert("Por favor, preencha todos os campos do cartão.");
@@ -137,8 +184,6 @@ const Orders = () => {
     });
     return total.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
   };
-
-
 
   return (
     <div className="orderDisplay">
@@ -219,7 +264,7 @@ const Orders = () => {
                 {showCreditForm && (
                   <div className="row detailsPayment">
                     <form onSubmit={handlePaymentSubmit}>
-                    <InputMask
+                      <InputMask
                         mask="9999 9999 9999 9999"
                         maskPlaceholder=""
                         placeholder="Número do cartão"
@@ -227,7 +272,7 @@ const Orders = () => {
                         onChange={(e) => setCardNumber(e.target.value)}
                         required
                       />
-                       <InputMask
+                      <InputMask
                         mask="99/99"
                         maskPlaceholder=""
                         placeholder="Validade"

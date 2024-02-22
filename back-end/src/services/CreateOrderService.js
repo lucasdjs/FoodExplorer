@@ -21,3 +21,21 @@ export const createOrderService = async (order) =>{
         return false;
     }
 }
+
+export const createOrderServiceFinish = async (order) =>{
+    try {
+        const itensJson = JSON.stringify(order.itens);
+
+        const insertedOrderId = await db('orderFinish').insert({
+            userId: order.userId,
+            total: order.total,
+            itens: itensJson,
+            status: order.status
+        }).returning('id');
+        return insertedOrderId[0];
+
+    } catch (error) {
+        console.error("Erro ao inserir o prato:", error);
+        return false;
+    }
+}

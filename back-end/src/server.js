@@ -4,7 +4,7 @@ import cors from 'cors';
 import { json } from 'express';
 import knex from 'knex';
 import knexfile from '../knexfile.js';
-import path from 'path'; // Importe o módulo path
+import path from 'path';
 
 const app = express();
 const PORT = process.env.PORT || 3000;

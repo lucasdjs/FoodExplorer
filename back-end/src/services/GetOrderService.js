@@ -14,3 +14,13 @@ export const getOrderById = async (id) => {
         throw new Error('Erro ao buscar pedido no banco de dados');
     }
 };
+
+export const getOrderFinishById = async (orderId) => {
+    try {
+      const order = await db('orderFinish').where({ id: orderId }).first();
+      return order;
+    } catch (error) {
+      console.error('Erro ao buscar a ordem pelo ID:', error);
+      throw error;
+    }
+  };
