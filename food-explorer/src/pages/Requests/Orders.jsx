@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PixIcon from "../../components/PixIcon";
 import QRCode from "qrcode.react";
 import { StyledButton } from "../../components/Button.styled";
+import InputMask from "react-input-mask"; 
 
 const Orders = () => {
   const getUserIdFromToken = () => {
@@ -36,6 +37,22 @@ const Orders = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [showPaymentPending, setShowPaymentPending] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+  const [cvc, setCvc] = useState("");
+  const [isCardInfoValid, setIsCardInfoValid] = useState(false);
+
+  const validateCardInfo = () => {
+    return (
+      cardNumber.trim() !== "" &&
+      expirationDate.trim() !== "" &&
+      cvc.trim() !== ""
+    );
+  };
+
+  useEffect(() => {
+    setIsCardInfoValid(validateCardInfo());
+  }, [cardNumber, expirationDate, cvc]);
 
   const handleDelete = async (dish) => {
     if (window.confirm("Tem certeza que deseja excluir este prato?")) {
@@ -74,10 +91,16 @@ const Orders = () => {
   };
 
   const handlePaymentSubmit = (event) => {
+    if (validateCardInfo()) {
+          
     event.preventDefault();
-    setShowCreditForm(false);
-    setShowPixQRCode(false);
-    setShowPaymentPending(true);
+      setShowCreditForm(false);
+      setShowPixQRCode(false);
+      setShowPaymentPending(true);
+      return;
+    } else {
+      alert("Por favor, preencha todos os campos do cartão.");
+    }
   };
 
   useEffect(() => {
@@ -114,6 +137,8 @@ const Orders = () => {
     });
     return total.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
   };
+
+
 
   return (
     <div className="orderDisplay">
@@ -193,10 +218,31 @@ const Orders = () => {
 
                 {showCreditForm && (
                   <div className="row detailsPayment">
-                    <form>
-                      <input type="text" placeholder="Número do cartão" />
-                      <input type="text" placeholder="Validade" />
-                      <input type="text" placeholder="CVC" />
+                    <form onSubmit={handlePaymentSubmit}>
+                    <InputMask
+                        mask="9999 9999 9999 9999"
+                        maskPlaceholder=""
+                        placeholder="Número do cartão"
+                        value={cardNumber}
+                        onChange={(e) => setCardNumber(e.target.value)}
+                        required
+                      />
+                       <InputMask
+                        mask="99/99"
+                        maskPlaceholder=""
+                        placeholder="Validade"
+                        value={expirationDate}
+                        onChange={(e) => setExpirationDate(e.target.value)}
+                        required
+                      />
+                      <InputMask
+                        mask="999"
+                        maskPlaceholder=""
+                        placeholder="CVC"
+                        value={cvc}
+                        onChange={(e) => setCvc(e.target.value)}
+                        required
+                      />
                       <StyledButton type="submit" onClick={handlePaymentSubmit}>
                         Finalizar pagamento
                       </StyledButton>
@@ -207,7 +253,11 @@ const Orders = () => {
                 {showPaymentPending && (
                   <div className="row detailsPayment">
                     <div className="text-center awaitPayment">
-                      <FontAwesomeIcon icon={faClock} size="7x" color="#616161" />
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        size="7x"
+                        color="#616161"
+                      />
                       <p>Aguardando pagamento no caixa</p>
                     </div>
                   </div>
