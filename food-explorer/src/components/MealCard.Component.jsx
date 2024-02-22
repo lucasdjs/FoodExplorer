@@ -49,6 +49,14 @@ const MealCard = ({ meal, isAdmin }) => {
     }
   }, [isAdmin, userId, meal.id]);
 
+  const removeFromFavorites = async (favoriteId) => {
+    try {
+      await axios.delete(`http://localhost:3000/deleteFavoriteById/${favoriteId}`);
+      setIsFavorite(false);
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+    }
+  };
 
   const incrementarQuantidade = () => {
     setQuantidade(quantidade + 1);
@@ -103,7 +111,13 @@ const MealCard = ({ meal, isAdmin }) => {
       )}
       {!isAdmin && (
         <div className="favorite-icon" id="favoriteIcon">
-          <button onClick={() => addFavorites(meal.id)}>
+          <button onClick={() => {
+            if (isFavorite) {
+              removeFromFavorites(meal.id);
+            } else {
+              addFavorites(meal.id);
+            }
+          }}>
             <FontAwesomeIcon
               icon={isFavorite ? faHeartSolid : faHeart}
               style={{ color: isFavorite ? "red" : "white" }}
