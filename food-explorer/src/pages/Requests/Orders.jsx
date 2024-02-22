@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Orders.css";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PixIcon from "../../components/PixIcon";
 import QRCode from "qrcode.react";
@@ -33,7 +34,28 @@ const Orders = () => {
   const [showPixQRCode, setShowPixQRCode] = useState(false);
   const [showCreditForm, setShowCreditForm] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [showPayment, setShowPayment] = useState(false); // Estado para controlar a exibição da seção de pagamento
+  const [showPayment, setShowPayment] = useState(false);
+  const [showPaymentPending, setShowPaymentPending] = useState(false);
+
+  const handleDelete = async (dish) => {
+    if (window.confirm("Tem certeza que deseja excluir este prato?")) {
+      try {
+        const response = await axios.delete(
+          `http://localhost:3000/deleteOrderById`,
+          {
+            data: { id: dish.id },
+          }
+        );
+        if (response.status === 200) {
+          window.location.reload();
+        } else {
+          console.log("Erro ao excluir pedido.");
+        }
+      } catch (error) {
+        console.error("Erro ao excluir o prato:", error);
+      }
+    }
+  };
 
   const handlePixClick = () => {
     setShowPixQRCode(true);
@@ -47,8 +69,13 @@ const Orders = () => {
 
   const handleAdvanceClick = () => {
     if (isMobile) {
-      setShowPayment(true); // Mostrar a seção de pagamento ao clicar em Avançar em dispositivos móveis
+      setShowPayment(true);
     }
+  };
+
+  const handlePaymentSubmit = (event) => {
+    event.preventDefault();
+    setShowPaymentPending(true);
   };
 
   useEffect(() => {
@@ -78,12 +105,20 @@ const Orders = () => {
     };
   }, []);
 
+  const calculateTotal = () => {
+    let total = 0;
+    orders.forEach((dish) => {
+      total += dish.total;
+    });
+    return total.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+  };
+
   return (
-    <div>
+    <div className="orderDisplay">
       <NavbarComponent />
       <div className="container">
         <div className="row orders">
-          {!showPayment && ( // Renderizar seção de "Meu Pedido" se showPayment for falso
+          {!showPayment && (
             <div className={isMobile ? "col-md-12 mb-4" : "col-md-6 mb-4"}>
               <h2>Meu Pedido</h2>
               {orders.map((dish) => (
@@ -100,19 +135,25 @@ const Orders = () => {
                       {dish.quantity} x {dish.name}{" "}
                       <span>R$ {dish.total.toFixed(2)}</span>
                     </p>
-                    <button id="deleteOrder">Excluir</button>
+                    <button id="deleteOrder" onClick={() => handleDelete(dish)}>
+                      Excluir
+                    </button>
                   </div>
                 </div>
               ))}
-              {isMobile && ( // Renderizar botão "Avançar" apenas em dispositivos móveis
-                <div className="text-center">
-                  <StyledButton onClick={handleAdvanceClick}>Avançar</StyledButton>
+              <p>Total: R$ {calculateTotal()}</p>
+
+              {isMobile && (
+                <div className="text-center" id="buttonAvancar">
+                  <StyledButton onClick={handleAdvanceClick}>
+                    Avançar
+                  </StyledButton>
                 </div>
               )}
             </div>
           )}
 
-          {(showPayment || !isMobile) && ( // Renderizar a seção de pagamento se showPayment for verdadeiro ou se não for um dispositivo móvel
+          {(showPayment || !isMobile) && (
             <div className="col-md-6 mb-4">
               <h2>Pagamento</h2>
               <div className="row">
@@ -152,8 +193,17 @@ const Orders = () => {
                       <input type="text" placeholder="Número do cartão" />
                       <input type="text" placeholder="Validade" />
                       <input type="text" placeholder="CVC" />
-                      <StyledButton type="submit">Finalizar pagamento</StyledButton>
+                      <StyledButton type="submit" onClick={handlePaymentSubmit}>
+                        Finalizar pagamento
+                      </StyledButton>
                     </form>
+                  </div>
+                )}
+
+                {showPaymentPending && (
+                  <div className="text-center">
+                  <FontAwesomeIcon icon="fa-solid fa-clock" />
+                    <p>Aguardando pagamento no caixa</p>
                   </div>
                 )}
               </div>

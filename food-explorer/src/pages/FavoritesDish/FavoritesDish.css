@@ -34,6 +34,11 @@ h1{
     .descriptionFavorite {
       flex: 1; /* Permite que o texto ocupe o restante do espaço disponível */
     }
+
+    .favoritesDish .footer{
+      position: fixed !important;
+  }
+    
   }
   
   

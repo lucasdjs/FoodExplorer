@@ -9,6 +9,8 @@ body{
     overflow-y: scroll !important;
     margin: 0px;
     padding:0px;
+    width:100%;
+    heigth:100%;
 }
 
 ul{
@@ -53,7 +55,15 @@ a{
     }
     .footer {
         position: relative;
-      } 
+      }
+      
+      body{
+        margin: 0px !important;
+        padding:0px !important;
+      }
+      .container{
+        margin-bottom: 50px;
+    }
   }
 `;
 

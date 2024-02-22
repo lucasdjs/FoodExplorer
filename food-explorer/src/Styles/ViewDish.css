@@ -39,3 +39,16 @@ p, h2 {
 .decrement button{
     width: 10px;
 }
+
+/* Ajuste o layout para dispositivos móveis */
+@media (max-width: 767px) {
+    .imgView img{
+        width: 100%;
+        height: 80%;
+    }
+
+    #incluir{
+        width: 50% !important;
+    }
+  }
+  

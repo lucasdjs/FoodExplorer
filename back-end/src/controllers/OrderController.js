@@ -1,5 +1,6 @@
 import { createOrderService } from "../services/CreateOrderService.js";
 import { getOrderById } from "../services/GetOrderService.js";
+import { deleteOrder } from "../services/DeleteOrderService.js";
 
 export const createOrder = async (req, res) => {
   try {
@@ -14,7 +15,6 @@ export const createOrder = async (req, res) => {
 };
 
 export const getOrder = async (req, res) => {
-  console.log(req.params)
   const { id } = req.params;
   try { 
     const dishes = await getOrderById(id);
@@ -23,5 +23,15 @@ export const getOrder = async (req, res) => {
   catch (error) {
     console.error("Ocorreu um erro ao buscar os pedidos", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const deleteOrderById = async (req, res) => {
+  const { id } = req.body;
+  try {
+   const response =  await deleteOrder(id);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 }

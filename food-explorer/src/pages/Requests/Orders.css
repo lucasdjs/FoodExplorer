@@ -58,15 +58,15 @@ p{
     border-radius: 10px;
 }
 
-.detailsPayment button{
+
+
+.detailsPayment button, #buttonAvancar button {
     background-color: #92000E;
 }
 
-.footer{
-    position: fixed !important;
+.orderDisplay .footer{
+    position: fixed;
 }
-
-
 
 /* Ajuste o layout para dispositivos móveis */
 @media (max-width: 767px) {
@@ -75,6 +75,9 @@ p{
     }
     .footer{
         position: relative !important;
+    }
+    #buttonAvancar button{
+        width: 50%;
     }
   }
   

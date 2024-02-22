@@ -66,12 +66,13 @@ const NavbarComponent = ({ isAdmin, idUser }) => {
           </div>
         </div>
 
-        {!isAdmin &&
- <div className="col d-none d-md-block favorites">
- <Link to={`/home/user/favoritesDishes/${idUser}`}>Meus favoritos</Link>
-   </div>
-        }
-       
+        {!isAdmin && (
+          <div className="col d-none d-md-block favorites">
+            <Link to={`/home/user/favoritesDishes/${idUser}`}>
+              Meus favoritos
+            </Link>
+          </div>
+        )}
 
         <div className="col-2 d-none d-md-block">
           <div className="button-pedidos">
@@ -127,6 +128,24 @@ const NavbarComponent = ({ isAdmin, idUser }) => {
         <div className="offcanvas-body">
           <ul className="navbar-nav justify-content-start flex-grow-1 pe-3">
             <li className="nav-item">
+              <hr />
+              {isAdmin && <Link to={`/home/admin/newdish`}>Novo Prato</Link>}
+              {!isAdmin && (
+                <Link
+                  to={`http://localhost:5173/home/user/favoritesDishes/${idUser}`}
+                >
+                  Meus Favoritos
+                </Link>
+              )}
+              <hr />
+              {!isAdmin && (
+                <Link
+                  to={`http://localhost:5173/home/user/orders/${idUser}`}
+                >
+                  Pedidos
+                </Link>
+              )}
+              <hr />
               <a
                 className="nav-link active text-white"
                 aria-current="page"
@@ -135,13 +154,6 @@ const NavbarComponent = ({ isAdmin, idUser }) => {
                 {" "}
                 <Link to={`/`}>Sair</Link>
               </a>
-              {isAdmin &&
-              <Link to={`/home/admin/newdish`}>Novo Prato</Link>
-              }
-              {!isAdmin &&
-                <Link to={`http://localhost:5173/home/user/favoritesDishes/${idUser}`}>Meus Favoritos</Link>
-              }
-              <hr />
             </li>
           </ul>
         </div>
