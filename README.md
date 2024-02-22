@@ -122,7 +122,7 @@ npm run dev
 npm run dev
 
 
-3. Acesse a aplicação em seu navegador através do endereço: `http://localhost:3000`.
+3. Acesse a aplicação em seu navegador através do endereço: `http://localhost:5173/`.
 
 ## Contribuição
 
