@@ -1,0 +1,54 @@
+.imgView img{
+    width: 100%;
+    height: 100%;
+}
+.container{
+    padding: 20px;
+}
+.viewDishPage footer{
+    position: fixed !important;
+}
+p, h2 {
+    text-align: left;
+    font-family: 'Poppins';
+}
+.dishInformation{
+    margin-top: 50px;
+}
+
+.quantity{
+    justify-content:left
+}
+
+.dishInformation .quantity button{
+    margin-left: 0;
+}
+
+#incluir{
+    width: 150px;
+}
+
+.tags span {
+    display: inline-block;
+    margin-right: 5px;
+    background-color: #192227;
+    padding: 6px;
+    border-radius: 2px;
+}
+
+.decrement button{
+    width: 10px;
+}
+
+/* Ajuste o layout para dispositivos móveis */
+@media (max-width: 767px) {
+    .imgView img{
+        width: 100%;
+        height: 80%;
+    }
+
+    #incluir{
+        width: 50% !important;
+    }
+  }
+  

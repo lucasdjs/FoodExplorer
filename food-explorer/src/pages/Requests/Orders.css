@@ -1,0 +1,86 @@
+.orders img{
+    width: 100%;
+    height: 100%;
+}
+
+.cardPayment button{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    color: white;
+    border: none;
+}
+
+.cardPayment{
+    margin: 0;
+    padding: 0;
+}
+p{
+    font-family: 'Poppins';
+    font-size: 15px;
+    padding-top: 30px;
+}
+.cardPayment p{
+    color: rgb(207, 207, 207);
+    padding-top: 10px;
+    text-align: center;
+}
+
+#buttonPix{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    color: white;
+    border: none;
+}
+
+.selected {
+    background-color: #0D161B !important; /* Cor de fundo para botões selecionados */
+    color: white; /* Cor do texto para botões selecionados */
+  }
+
+#deleteOrder{
+    background-color: transparent;
+    color: #AB4D55;
+    border: none;
+    font-family: 'Poppins';
+}
+
+.cardPayment{
+    border: solid 1px rgba(139, 139, 139, 0.411);
+    border-radius: 5px;
+}
+.detailsPayment{
+    border: solid 1px rgba(139, 139, 139, 0.411);
+    margin-left: 1.2px;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.awaitPayment p{
+    text-align: center;
+    padding: 10px;
+    font-size: 25px;
+    color: #616161;
+    font-weight: bold;
+}
+
+.detailsPayment button, #buttonAvancar button {
+    background-color: #92000E;
+}
+
+/* Ajuste o layout para dispositivos móveis */
+@media (max-width: 767px) {
+    .orders img{
+        width: 20%;
+    }
+    .footer{
+        position: relative !important;
+    }
+    #buttonAvancar button{
+        width: 50%;
+    }
+  }
+  

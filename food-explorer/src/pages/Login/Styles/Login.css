@@ -4,8 +4,26 @@
   align-items: center;
   height: 100vh;
   background-color: #00070A;
+  width: 100%;
 }
 
+.logo {
+  text-align: center; /* Centraliza o conteúdo */
+}
+.logo-text {
+  display: flex;
+  align-items: center;
+}
+#alert a{
+  color: #040f18;
+  font-weight: bold;
+}
+
+.admin-badge {
+ display: block;
+ text-align: end;
+ color: #82F3FF;
+}
 .left {
   flex: 1;
   display: flex;
@@ -13,6 +31,9 @@
   justify-content: center;
 }
 
+.left .logo h3{
+  font-size: 50px;
+}
 .right {
   flex: 1;
   display: flex;
@@ -27,10 +48,10 @@ form {
 }
 
 input {
-  margin: 5px 0;
+  margin: 15px 0;
   padding: 8px;
   width: 400px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc00;
   border-radius: 4px;
   background-color: #001119;
   color: #ffffff;
@@ -57,7 +78,18 @@ img {
   margin-bottom: 10px;
 }
 
-@media screen and (max-width: 600px) {
+.admin-badge{
+  font-size: 10px;
+}
+
+#error{
+  color: rgb(255, 255, 255);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+@media screen and (max-width: 763px) {
   /* Estilos para dispositivos com largura máxima de 600px (celulares) */
   .Login {
     flex-direction: column; /* Altera a direção do flexbox para column */
@@ -78,4 +110,10 @@ img {
   form {
     width: 90%; /* Define a largura do formulário */
   }
+
+  .left .logo h3{
+    font-size: 40px;
+  }
+
+
 }

@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "foodexplorer",
+            "database": "${workspaceFolder:FoodExplorer}/back-end/database.db"
+        }
+    ]
+}

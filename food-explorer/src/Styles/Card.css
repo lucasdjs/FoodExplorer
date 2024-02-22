@@ -1,0 +1,93 @@
+.quantity {
+    margin-top: 10px;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.edit-icon {
+    text-align: right;
+margin-left: 150px;
+}
+
+#favoriteIcon{
+    margin-left: 150px;
+}
+
+.favorite-icon button{
+    border: none;
+    background-color: transparent;
+}
+
+.quantity button {
+    padding: 0 10px;
+    margin: 0 5px;
+    color: white;
+    font-size: 35px;
+    background-color: transparent;
+    border: none;
+}
+
+.meal-card {
+    margin: 0 20px;
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  overflow: hidden; 
+  padding: 10px;
+}
+
+.meal-card h3{
+text-align: center;
+}
+
+
+.meal-card img {
+    width: 150px;
+    height: 150px;
+    display: block;
+}
+
+#incluir {
+    background-color: #750310;
+    font-size: 15px;
+    border-radius: 4px;
+    height: 40px;
+}
+
+
+#price{
+    color: #82F3FF;
+    font-size: 25px;
+    font-weight: 300;
+}
+
+#description{
+    max-height: 30px; /* Ajuste conforme necessário */
+  overflow: hidden;
+  text-wrap: wrap;
+  margin-bottom: 10px;
+
+}
+
+@media screen and (max-width: 768px) {
+.quantity button{
+    font-size: 15px;
+}
+#incluir{
+    height: 30px;
+    width: 60px !important;
+}
+
+.meal-card img{
+    width: 100px;
+    height: auto;
+}
+#favoriteIcon{
+    margin-left: 100px;
+}
+  }

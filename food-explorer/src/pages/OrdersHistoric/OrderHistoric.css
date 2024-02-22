@@ -1,0 +1,47 @@
+.table{
+    --bs-table-bg:none;
+    color: white;
+    border: solid 1px rgba(87, 87, 87, 0.596);
+}
+.table>:not(caption)>*>*{
+    color: rgb(190, 190, 190);
+    font-family: 'Poppins';
+    text-align: center;
+    border: solid 1px rgba(207, 200, 200, 0.596);
+    padding: 8px;
+}
+
+.th{
+    font-weight: bold;
+}
+
+.orderHistoric .footer{
+    position: fixed !important;
+}
+
+select{
+    background-color: #00111A;
+    padding: 6px;
+    color: rgb(190, 190, 190);
+    border: none;
+    border-radius: 5px;
+
+}
+
+.orderCard{
+    border: solid 1px rgba(87, 87, 87, 0.596);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+/* Ajuste o layout para dispositivos móveis */
+@media (max-width: 767px) {
+    select{
+        width: 20em;
+    }
+
+    #cardMobileUser span{
+    margin-right: 15px;
+text-align: left;}
+  }
+  
