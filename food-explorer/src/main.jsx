@@ -15,6 +15,8 @@ import ErrorPage from "./pages/ErrorPage/Error404.jsx";
 import EditDish from "./pages/AdminHome/EditDishAdmin.jsx";
 import FavoritesDish from "./pages/FavoritesDish/FavoritesDish.jsx";
 import Orders from "./pages/Requests/Orders.jsx";
+import OrderHistoryPage from "./pages/OrdersHistoric/OrderHistoric.jsx";
+import OrderHistoryPageAdmin from "./pages/OrdersHistoric/Admin/OrderHistoricAdmin.jsx";
 
 const styleTag = document.createElement('style');
 styleTag.innerHTML = globalStyles;
@@ -33,10 +35,12 @@ ReactDOM.render(
           <Route path="home/user/viewDish/:id" element={<ViewDishPage />} />
           <Route path="home/user/favoritesDishes/:id" element={<FavoritesDish />} />
           <Route path="home/user/orders/:id" element={<Orders />} />
+          <Route path="home/user/ordersHistoric/:id" element={<OrderHistoryPage />} />
           <Route path="home/admin" element={<AdminHome />} />
           <Route path="home/admin/newdish" element={<NewDish />} />
           <Route path="home/admin/viewDish/:id" element={<ViewDishAdminPage />} />
           <Route path="home/admin/editdish/:id" element={<EditDish />} />
+          <Route path="home/admin/ordersHistoric" element={<OrderHistoryPageAdmin />} />
         </Route>
       </Routes>
     </Router>

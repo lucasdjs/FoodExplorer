@@ -1,16 +1,12 @@
+// Orders.jsx
 import React, { useEffect, useState } from "react";
 import NavbarComponent from "../../components/Navbar.Component";
 import Footer from "../../components/Footer.Component";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Orders.css";
-import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import PixIcon from "../../components/PixIcon";
-import QRCode from "qrcode.react";
-import { StyledButton } from "../../components/Button.styled";
-import InputMask from "react-input-mask";
+import OrderSummary from "./OrderSummary";
+import PaymentOptions from "./PaymentOptions";
 
 const Orders = () => {
   const getUserIdFromToken = () => {
@@ -83,20 +79,17 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
+        if (!idOrder) return;
         const response = await axios.get(`http://localhost:3000/getOrderFinishById/${idOrder}`);
         setOrder(response.data);
+        setShowPaymentPending(response.data.status === 'pendente');
+        setShowPayment(response.data.status !== 'pendente');
       } catch (error) {
         console.error('Erro ao buscar a ordem:', error);
       }
     };
     fetchOrder();
   }, [idOrder]);
-
-  useEffect(() => {
-    const pendingOrder = order && order.status === 'pendente';
-    setShowPaymentPending(pendingOrder);
-    setShowPayment(!pendingOrder);
-  }, [order]);
 
   const handlePixClick = () => {
     setShowPixQRCode(true);
@@ -151,6 +144,10 @@ const Orders = () => {
   };
 
   useEffect(() => {
+    console.log("showPaymentPending:", showPaymentPending); // Verifica o valor de showPaymentPending
+  }, [showPaymentPending]);
+
+  useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
@@ -190,126 +187,30 @@ const Orders = () => {
       <NavbarComponent />
       <div className="container">
         <div className="row orders">
-          {!showPayment && (
-            <div className={isMobile ? "col-md-12 mb-4" : "col-md-6 mb-4"}>
-              <h2>Meu Pedido</h2>
-              {orders.map((dish) => (
-                <div className="row">
-                  <div className="col-md-2">
-                    <img
-                      src={`http://localhost:3000/uploads/${dish.image}`}
-                      alt="Meal"
-                      className="img-fluid"
-                    />
-                  </div>
-                  <div className="col">
-                    <p>
-                      {dish.quantity} x {dish.name}{" "}
-                      <span>R$ {dish.total.toFixed(2)}</span>
-                    </p>
-                    <button id="deleteOrder" onClick={() => handleDelete(dish)}>
-                      Excluir
-                    </button>
-                  </div>
-                </div>
-              ))}
-              <p>Total: R$ {calculateTotal()}</p>
-
-              {isMobile && (
-                <div className="text-center" id="buttonAvancar">
-                  <StyledButton onClick={handleAdvanceClick}>
-                    Avançar
-                  </StyledButton>
-                </div>
-              )}
-            </div>
-          )}
-
-          {(showPayment || !isMobile) && (
-            <div className="col-md-6 mb-4">
-              <h2>Pagamento</h2>
-              <div className="row">
-                <div className="col-6 cardPayment">
-                  <button
-                    id="buttonPix"
-                    className={showPixQRCode ? "selected" : ""}
-                    onClick={handlePixClick}
-                    disabled={showPaymentPending}
-                  >
-                    <PixIcon /> PIX
-                  </button>
-                </div>
-                <div className="col-6 cardPayment">
-                  <button
-                    className={showCreditForm ? "selected" : ""}
-                    onClick={handleCreditClick}
-                    disabled={showPaymentPending}
-                  >
-                    <FontAwesomeIcon icon={faCreditCard} />
-                    Crédito
-                  </button>
-                </div>
-
-                {showPixQRCode && (
-                  <div className="row detailsPayment">
-                    <QRCode
-                      value="informacao_do_qr_code_para_pix"
-                      fgColor="#888888"
-                      bgColor="#000000"
-                      size={180}
-                    />
-                  </div>
-                )}
-
-                {showCreditForm && (
-                  <div className="row detailsPayment">
-                    <form onSubmit={handlePaymentSubmit}>
-                      <InputMask
-                        mask="9999 9999 9999 9999"
-                        maskPlaceholder=""
-                        placeholder="Número do cartão"
-                        value={cardNumber}
-                        onChange={(e) => setCardNumber(e.target.value)}
-                        required
-                      />
-                      <InputMask
-                        mask="99/99"
-                        maskPlaceholder=""
-                        placeholder="Validade"
-                        value={expirationDate}
-                        onChange={(e) => setExpirationDate(e.target.value)}
-                        required
-                      />
-                      <InputMask
-                        mask="999"
-                        maskPlaceholder=""
-                        placeholder="CVC"
-                        value={cvc}
-                        onChange={(e) => setCvc(e.target.value)}
-                        required
-                      />
-                      <StyledButton type="submit" onClick={handlePaymentSubmit}>
-                        Finalizar pagamento
-                      </StyledButton>
-                    </form>
-                  </div>
-                )}
-
-                {showPaymentPending && (
-                  <div className="row detailsPayment">
-                    <div className="text-center awaitPayment">
-                      <FontAwesomeIcon
-                        icon={faClock}
-                        size="7x"
-                        color="#616161"
-                      />
-                      <p>Aguardando pagamento no caixa</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+          <OrderSummary
+            orders={orders}
+            handleDelete={handleDelete}
+            calculateTotal={calculateTotal}
+            showPaymentPending={showPaymentPending}
+          />
+          <PaymentOptions
+            showPixQRCode={showPixQRCode}
+            showCreditForm={showCreditForm}
+            showPaymentPending={showPaymentPending}
+            handlePixClick={handlePixClick}
+            handleCreditClick={handleCreditClick}
+            handlePaymentSubmit={handlePaymentSubmit}
+            cardNumber={cardNumber}
+            expirationDate={expirationDate}
+            cvc={cvc}
+            setCardNumber={setCardNumber}
+            setExpirationDate={setExpirationDate}
+            setCvc={setCvc}
+            validateCardInfo={validateCardInfo}
+            isMobile={isMobile}
+            handleAdvanceClick={handleAdvanceClick}
+            showPayment={showPayment}
+          />
         </div>
       </div>
       <Footer />

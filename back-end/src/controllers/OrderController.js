@@ -1,5 +1,5 @@
 import { createOrderService, createOrderServiceFinish } from "../services/CreateOrderService.js";
-import { getOrderById, getOrderFinishById } from "../services/GetOrderService.js";
+import { getOrderById, getOrderFinishById, getOrderFinishByUserId, getOrderFinish } from "../services/GetOrderService.js";
 import { deleteOrder } from "../services/DeleteOrderService.js";
 
 export const createOrder = async (req, res) => {
@@ -47,6 +47,32 @@ export const getOrderByIdController = async (req, res) => {
       return res.status(404).json({ message: 'Ordem não encontrada' });
     }
     return res.status(200).json(order);
+  } catch (error) {
+    return res.status(500).json({ message: 'Erro ao buscar a ordem pelo ID' });
+  }
+};
+
+export const getOrderByUserIdController = async (req, res) => {
+  const orderId = req.params.id;
+
+  try {
+    const order = await getOrderFinishByUserId(orderId);
+    if (!order) {
+      return res.status(404).json({ message: 'Ordem não encontrada' });
+    }
+    return res.status(200).json(order);
+  } catch (error) {
+    return res.status(500).json({ message: 'Erro ao buscar a ordem pelo ID' });
+  }
+};
+
+export const getOrdersFinish = async (req, res) => {
+  try {
+    const orders = await getOrderFinish();
+    if (!orders) {
+      return res.status(404).json({ message: 'Ordens não encontradas' });
+    }
+    return res.status(200).json(orders);
   } catch (error) {
     return res.status(500).json({ message: 'Erro ao buscar a ordem pelo ID' });
   }

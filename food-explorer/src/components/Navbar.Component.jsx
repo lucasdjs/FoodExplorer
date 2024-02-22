@@ -52,7 +52,8 @@ const NavbarComponent = ({ isAdmin, idUser }) => {
           <LogoComponent isAdmin={isAdmin} />
         </div>
 
-        <div className="col-6 col-md-6 cold-sm-5 d-none d-md-block">
+        {isAdmin && (
+        <div className="col-5 col-md-5 cold-sm-5 d-none d-md-block">
           {" "}
           <div className="search-wrapper">
             <FontAwesomeIcon icon={faSearch} className="search-icon" />
@@ -64,12 +65,45 @@ const NavbarComponent = ({ isAdmin, idUser }) => {
               className="search-input"
             />
           </div>
-        </div>
+        </div>)
+        }
+
+{!isAdmin && (
+        <div className="col-4 col-md-4 cold-sm-5 d-none d-md-block">
+          {" "}
+          <div className="search-wrapper">
+            <FontAwesomeIcon icon={faSearch} className="search-icon" />
+            <input
+              type="text"
+              placeholder="        Busque por pratos ou ingredientes..."
+              value={searchTerm}
+              onChange={handleSearchInputChange}
+              className="search-input"
+            />
+          </div>
+        </div>)
+        }
+
+        {isAdmin && (
+          <div className="col d-none d-md-block favorites">
+            <Link to={`/home/Admin/ordersHistoric`}>
+              Pedidos
+            </Link>
+          </div>
+        )}
 
         {!isAdmin && (
           <div className="col d-none d-md-block favorites">
             <Link to={`/home/user/favoritesDishes/${idUser}`}>
               Meus favoritos
+            </Link>
+          </div>
+        )}
+
+          {!isAdmin && (
+          <div className="col d-none d-md-block favorites">
+            <Link to={`/home/user/ordersHistoric/${idUser}`}>
+              Histórico de pedidos
             </Link>
           </div>
         )}
