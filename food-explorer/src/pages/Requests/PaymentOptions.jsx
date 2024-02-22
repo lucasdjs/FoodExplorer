@@ -7,6 +7,7 @@ import PixIcon from "../../components/PixIcon";
 import QRCode from "qrcode.react";
 import { StyledButton } from "../../components/Button.styled";
 import InputMask from "react-input-mask";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const PaymentOptions = ({
   showPixQRCode,
@@ -22,6 +23,8 @@ const PaymentOptions = ({
   setExpirationDate,
   setCvc,
   validateCardInfo,
+  showPaymentAprove,
+  showPaymentDelivery,
 }) => {
   return (
     <div className="col-md-6 mb-4">
@@ -32,7 +35,9 @@ const PaymentOptions = ({
             id="buttonPix"
             className={showPixQRCode ? "selected" : ""}
             onClick={handlePixClick}
-            disabled={showPaymentPending}
+            disabled={
+              showPaymentPending || showPaymentAprove || showPaymentDelivery
+            }
           >
             <PixIcon /> PIX
           </button>
@@ -41,7 +46,9 @@ const PaymentOptions = ({
           <button
             className={showCreditForm ? "selected" : ""}
             onClick={handleCreditClick}
-            disabled={showPaymentPending}
+            disabled={
+              showPaymentAprove || showPaymentDelivery || showPaymentPending
+            }
           >
             <FontAwesomeIcon icon={faCreditCard} />
             Crédito
@@ -96,12 +103,26 @@ const PaymentOptions = ({
         {showPaymentPending && (
           <div className="row detailsPayment">
             <div className="text-center awaitPayment">
-              <FontAwesomeIcon
-                icon={faClock}
-                size="7x"
-                color="#616161"
-              />
+              <FontAwesomeIcon icon={faClock} size="7x" color="#616161" />
               <p>Aguardando pagamento no caixa</p>
+            </div>
+          </div>
+        )}
+
+        {showPaymentAprove && (
+          <div className="row detailsPayment">
+            <div className="text-center awaitPayment">
+              <FontAwesomeIcon icon={faCheck} size="7x" color="#616161" />
+              <p>Pagamento Aprovado!</p>
+            </div>
+          </div>
+        )}
+
+        {showPaymentDelivery && (
+          <div className="row detailsPayment">
+            <div className="text-center awaitPayment">
+             
+              <p>Pedido entregue!</p>
             </div>
           </div>
         )}

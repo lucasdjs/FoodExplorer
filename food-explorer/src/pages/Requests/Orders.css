@@ -71,10 +71,6 @@ p{
     background-color: #92000E;
 }
 
-.orderDisplay .footer{
-    position: fixed;
-}
-
 /* Ajuste o layout para dispositivos móveis */
 @media (max-width: 767px) {
     .orders img{

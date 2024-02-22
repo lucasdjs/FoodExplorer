@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import NavbarComponent from "../../components/Navbar.Component";
 import Footer from "../../components/Footer.Component";
 import axios from "axios";
-import './OrderHistoric.css'
+import "./OrderHistoric.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faBoxOpen, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
-
-const OrderHistoryPage = ({idAdmin}) => {
+const OrderHistoryPage = ({ idAdmin }) => {
   const getUserIdFromToken = () => {
     const token = localStorage.getItem("token");
 
@@ -39,12 +38,13 @@ const OrderHistoryPage = ({idAdmin}) => {
   };
 
   const [orders, setOrders] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
   const userId = getUserIdFromToken();
 
   const cleanItemString = (itemString) => {
-   const cleanedString = itemString.replace(/[\[\]"]+/g, '');
-   const itemsArray = cleanedString.split(',');
-   return itemsArray.join(', ');
+    const cleanedString = itemString.replace(/[\[\]"]+/g, "");
+    const itemsArray = cleanedString.split(",");
+    return itemsArray.join(", ");
   };
 
   useEffect(() => {
@@ -60,6 +60,14 @@ const OrderHistoryPage = ({idAdmin}) => {
     };
 
     fetchOrders();
+
+    // Detectando se é um dispositivo móvel
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Adjust as needed
+    };
+    handleResize(); // Set initial value
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -67,27 +75,40 @@ const OrderHistoryPage = ({idAdmin}) => {
       <NavbarComponent />
       <div className="container">
         <h2>Histórico de Pedidos</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>Código</th>
-              <th>Detalhamento</th>
-              <th>Data e Hora</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(orders) &&
-              orders.map((order) => (
-                <tr key={order.id}>
-                  <td>{getStatusIcon(order.status)}</td>
-                  <td>{order.id}</td>
-                  <td>{cleanItemString(order.itens)}</td>
-                  <td>{order.created_at}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        {isMobile ? (
+          <div className="cardContainer">
+            {orders.map((order) => (
+              <div key={order.id} className="orderCard">
+                <div id="cardMobileUser"><span>000{order.id}</span> {getStatusIcon(order.status)} {order.status} <span>{order.created_at}</span></div>
+                <div>
+                 {cleanItemString(order.itens)}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Código</th>
+                <th>Detalhamento</th>
+                <th>Data e Hora</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(orders) &&
+                orders.map((order) => (
+                  <tr key={order.id}>
+                    <td>{getStatusIcon(order.status)}</td>
+                    <td>000{order.id}</td>
+                    <td>{cleanItemString(order.itens)}</td>
+                    <td>{order.created_at}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
       </div>
       <Footer />
     </div>

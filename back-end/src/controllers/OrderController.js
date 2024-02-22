@@ -1,6 +1,6 @@
 import { createOrderService, createOrderServiceFinish } from "../services/CreateOrderService.js";
 import { getOrderById, getOrderFinishById, getOrderFinishByUserId, getOrderFinish } from "../services/GetOrderService.js";
-import { deleteOrder } from "../services/DeleteOrderService.js";
+import { deleteOrder, updateOrderService } from "../services/DeleteOrderService.js";
 
 export const createOrder = async (req, res) => {
   try {
@@ -28,7 +28,7 @@ export const createOrderFinish = async (req, res) => {
 
 export const getOrder = async (req, res) => {
   const { id } = req.params;
-  try { 
+  try {
     const dishes = await getOrderById(id);
     res.status(200).json(dishes);
   }
@@ -78,10 +78,22 @@ export const getOrdersFinish = async (req, res) => {
   }
 };
 
+export const updateOrderStatusController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const response = await updateOrderService(id, status);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 export const deleteOrderById = async (req, res) => {
   const { id } = req.body;
+  console.log(id)
   try {
-   const response =  await deleteOrder(id);
+    const response = await deleteOrder(id);
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });

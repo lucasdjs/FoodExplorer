@@ -33,12 +33,23 @@ const Orders = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [showPaymentPending, setShowPaymentPending] = useState(false);
+  const [showPaymentAprove, setShowPaymentAprove] = useState(false);
+  const [showPaymentDelivery, setShowPaymentDelivery] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [cvc, setCvc] = useState("");
   const [isCardInfoValid, setIsCardInfoValid] = useState(false);
-  const [idOrder, setIdOrder] = useState(localStorage.getItem('orderId')); 
+  const [idOrder, setIdOrder] = useState(localStorage.getItem("orderId"));
   const [order, setOrder] = useState(null);
+  const [showDeleteButtons, setShowDeleteButtons] = useState(true);
+
+  useEffect(() => {
+    if (showPaymentAprove || showPaymentDelivery || showPaymentPending) {
+      setShowDeleteButtons(false);
+    } else {
+      setShowDeleteButtons(true);
+    }
+  }, [showPaymentAprove, showPaymentDelivery, showPaymentPending]);
 
   const validateCardInfo = () => {
     return (
@@ -73,19 +84,24 @@ const Orders = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem('orderId', idOrder);
+    localStorage.setItem("orderId", idOrder);
   }, [idOrder]);
 
   useEffect(() => {
     const fetchOrder = async () => {
       try {
         if (!idOrder) return;
-        const response = await axios.get(`http://localhost:3000/getOrderFinishById/${idOrder}`);
+        const response = await axios.get(
+          `http://localhost:3000/getOrderFinishById/${idOrder}`
+        );
         setOrder(response.data);
-        setShowPaymentPending(response.data.status === 'pendente');
-        setShowPayment(response.data.status !== 'pendente');
+        let status = response.data.status;
+        setShowPaymentPending(status === "pendente");
+        setShowPaymentAprove(status === "preparando");
+        setShowPaymentDelivery(status === "entregue");
+        setShowPayment(status !== "pendente" && status !== "preparando" && status !== "entregue");
       } catch (error) {
-        console.error('Erro ao buscar a ordem:', error);
+        console.error("Erro ao buscar a ordem:", error);
       }
     };
     fetchOrder();
@@ -144,10 +160,6 @@ const Orders = () => {
   };
 
   useEffect(() => {
-    console.log("showPaymentPending:", showPaymentPending); // Verifica o valor de showPaymentPending
-  }, [showPaymentPending]);
-
-  useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
@@ -192,6 +204,7 @@ const Orders = () => {
             handleDelete={handleDelete}
             calculateTotal={calculateTotal}
             showPaymentPending={showPaymentPending}
+            showDeleteButtons={showDeleteButtons} 
           />
           <PaymentOptions
             showPixQRCode={showPixQRCode}
@@ -210,6 +223,8 @@ const Orders = () => {
             isMobile={isMobile}
             handleAdvanceClick={handleAdvanceClick}
             showPayment={showPayment}
+            showPaymentAprove={showPaymentAprove}
+            showPaymentDelivery={showPaymentDelivery}
           />
         </div>
       </div>
