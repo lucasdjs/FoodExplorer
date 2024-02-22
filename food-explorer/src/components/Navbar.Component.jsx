@@ -31,7 +31,7 @@ const NavbarComponent = ({ isAdmin, idUser }) => {
     if (isAdmin) {
       navigate("/home/admin/newdish");
     } else {
-      console.log("Acessar pedidos");
+      navigate(`/home/user/orders/${idUser}`);
     }
   };
 
@@ -135,6 +135,12 @@ const NavbarComponent = ({ isAdmin, idUser }) => {
                 {" "}
                 <Link to={`/`}>Sair</Link>
               </a>
+              {isAdmin &&
+              <Link to={`/home/admin/newdish`}>Novo Prato</Link>
+              }
+              {!isAdmin &&
+                <Link to={`http://localhost:5173/home/user/favoritesDishes/${idUser}`}>Meus Favoritos</Link>
+              }
               <hr />
             </li>
           </ul>

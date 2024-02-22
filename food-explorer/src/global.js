@@ -6,6 +6,9 @@ body{
     background-color: ${theme.colors.primary};
     color: ${theme.colors.text};
     overflow-x: hidden;
+    overflow-y: scroll !important;
+    margin: 0px;
+    padding:0px;
 }
 
 ul{
@@ -42,7 +45,12 @@ a{
   }
 
   @media screen and (max-width: 763px) {
-
+    .app{
+        overflow:scroll !important;
+    }
+    .root{
+        overflow:scroll;
+    }
     .footer {
         position: relative;
       } 

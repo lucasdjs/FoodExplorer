@@ -75,6 +75,23 @@ const MealCard = ({ meal, isAdmin }) => {
     }
   };
 
+  const addOrder = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/insertOrder",
+        {
+          dishId: meal.id,
+          userId: userId,
+          price: meal.price,
+          quantity: quantidade,
+        }
+      );
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error("Erro ao adicionar aos favoritos:", error);
+    }
+  };
+
   return (
     <div className="meal-card">
       {isAdmin && (
@@ -112,7 +129,7 @@ const MealCard = ({ meal, isAdmin }) => {
           <button onClick={decrementarQuantidade}>-</button>
           <span>{quantidade}</span>
           <button onClick={incrementarQuantidade}>+</button>
-          <button id="incluir">incluir</button>
+          <button id="incluir" onClick={addOrder}>incluir</button>
         </div>
       )}
     </div>

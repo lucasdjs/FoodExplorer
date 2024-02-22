@@ -8,6 +8,7 @@ import multer from 'multer';
 import { CreateDish } from "../services/CreateDishService.js";
 import { getAllDishController, getCategories, getById, editById, deleteById } from '../controllers/DishController.js';
 import { addFavorite, getFavoritesByUserId, getFavoriteDishByIds, removeFavoriteById } from "../controllers/FavoritesController.js";
+import { createOrder,getOrder } from "../controllers/OrderController.js";
 
 const Secret = "SecretKey";
 const routes = express.Router();
@@ -83,6 +84,8 @@ routes.post('/favorites', addFavorite);
 routes.get('/favorites/:id',getFavoritesByUserId);
 routes.get('/getDishesByIds/',getFavoriteDishByIds);
 routes.delete('/deleteFavoriteById/:userId', removeFavoriteById);
+routes.post('/insertOrder/', createOrder);
+routes.get('/getOrderByUserId/:id', getOrder)
 
 
 routes.post('/addUser', async (req, res) => {

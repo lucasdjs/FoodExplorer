@@ -26,8 +26,6 @@ const UserHome = () => {
 
   const userId = getUserIdFromToken();
 
-  
-
   return (
     <div className='home'>
       <NavbarComponent isAdmin={false} idUser={userId}/>
