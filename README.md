@@ -37,8 +37,75 @@ npm install
 
 
 ## Configuração do Banco de Dados
+Como foi feito o projeto utilizando o type:module do nodejs, pra rodar as migrations deverá seguir os seguintes passos:
+1 - remover a tag  "type": "module" do package.json
+2 - ir até o arquivo knex.js e descomentar as seguintes linhas : 
 
-rodar o comando npx knex migrate:latest para gerar a migration no banco de dados
+// const path = require('path');
+
+// module.exports = {
+//   client: 'sqlite3',
+//   connection: {
+//     filename: path.resolve(process.cwd(), './foodexplorer.db') 
+//   },
+//   migrations: {
+//     directory: path.resolve(process.cwd(), 'src', 'migrations') 
+//   },
+//   useNullAsDefault: true 
+// };
+
+
+e comentar as seguintes linha: 
+
+import path from 'path';
+
+export default {
+  client: 'sqlite3',
+  connection: {
+    filename: path.resolve(process.cwd(), './foodexplorer.db') 
+  },
+  migrations: {
+    directory: path.resolve(process.cwd(), 'src', 'migrations'),
+    extension: 'js'
+  },
+  useNullAsDefault: true 
+};
+
+
+
+3 - Rodar o comando npx knex migrate:latest para gerar a migration no banco de dados
+
+4 - Fazer o processo inverso do que foi feito, comentando essas linhas: 
+
+// module.exports = {
+//   client: 'sqlite3',
+//   connection: {
+//     filename: path.resolve(process.cwd(), './foodexplorer.db') 
+//   },
+//   migrations: {
+//     directory: path.resolve(process.cwd(), 'src', 'migrations') 
+//   },
+//   useNullAsDefault: true 
+// };
+
+
+e decomentando essas: 
+import path from 'path';
+
+export default {
+  client: 'sqlite3',
+  connection: {
+    filename: path.resolve(process.cwd(), './foodexplorer.db') 
+  },
+  migrations: {
+    directory: path.resolve(process.cwd(), 'src', 'migrations'),
+    extension: 'js'
+  },
+  useNullAsDefault: true 
+};
+
+e após isso inserir no package.json  "type": "module"
+
 
 ## Execução
 
