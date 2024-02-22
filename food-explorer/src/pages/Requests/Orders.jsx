@@ -75,6 +75,8 @@ const Orders = () => {
 
   const handlePaymentSubmit = (event) => {
     event.preventDefault();
+    setShowCreditForm(false);
+    setShowPixQRCode(false);
     setShowPaymentPending(true);
   };
 
@@ -162,6 +164,7 @@ const Orders = () => {
                     id="buttonPix"
                     className={showPixQRCode ? "selected" : ""}
                     onClick={handlePixClick}
+                    disabled={showPaymentPending}
                   >
                     <PixIcon /> PIX
                   </button>
@@ -170,6 +173,7 @@ const Orders = () => {
                   <button
                     className={showCreditForm ? "selected" : ""}
                     onClick={handleCreditClick}
+                    disabled={showPaymentPending}
                   >
                     <FontAwesomeIcon icon={faCreditCard} />
                     Crédito
@@ -201,9 +205,11 @@ const Orders = () => {
                 )}
 
                 {showPaymentPending && (
-                  <div className="text-center">
-                  <FontAwesomeIcon icon="fa-solid fa-clock" />
-                    <p>Aguardando pagamento no caixa</p>
+                  <div className="row detailsPayment">
+                    <div className="text-center awaitPayment">
+                      <FontAwesomeIcon icon={faClock} size="7x" color="#616161" />
+                      <p>Aguardando pagamento no caixa</p>
+                    </div>
                   </div>
                 )}
               </div>
