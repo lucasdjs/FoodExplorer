@@ -37,6 +37,7 @@ npm install
 
 
 ## Configuração do Banco de Dados
+
 Como foi feito o projeto utilizando o type:module do nodejs e o knex foi feito com commonjs, pra rodar as migrations deverá seguir os seguintes passos:
 1 - remover a tag  "type": "module" do package.json
 2 - ir até o arquivo knex.js e descomentar as seguintes linhas : 
@@ -122,7 +123,7 @@ npm run dev
 npm run dev
 
 
-3. Acesse a aplicação em seu navegador através do endereço: `http://localhost:3000`.
+3. Acesse a aplicação em seu navegador através do endereço: `http://localhost:5173/`.
 
 ## Contribuição
 
