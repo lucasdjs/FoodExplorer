@@ -37,7 +37,8 @@ npm install
 
 
 ## Configuração do Banco de Dados
-Como foi feito o projeto utilizando o type:module do nodejs e o knex só aceita commonjs, pra rodar as migrations deverá seguir os seguintes passos:
+
+Como foi feito o projeto utilizando o type:module do nodejs e o knex foi feito com commonjs, pra rodar as migrations deverá seguir os seguintes passos:
 1 - remover a tag  "type": "module" do package.json
 2 - ir até o arquivo knex.js e descomentar as seguintes linhas : 
 
